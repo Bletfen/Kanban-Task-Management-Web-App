@@ -3,7 +3,6 @@ import HeaderTitle from "./HeaderTitle";
 export default async function Header() {
   const fetchBoards = await fetch("http://localhost:3000/api/boards");
   const boards = await fetchBoards.json();
-  console.log(boards);
   return (
     <div className="flex items-center justify-between">
       <HeaderTitle boards={boards} />

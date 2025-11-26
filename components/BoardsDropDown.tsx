@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 
 export default function BoardsDropDown({
@@ -10,6 +11,7 @@ export default function BoardsDropDown({
   setShowBoards: Dispatch<SetStateAction<boolean>>;
   setTitle: Dispatch<SetStateAction<string>>;
 }) {
+  const router = useRouter();
   return (
     <div>
       <h1>All Boards({boards.length})</h1>
@@ -25,6 +27,7 @@ export default function BoardsDropDown({
             onClick={() => {
               setTitle(b.name);
               setShowBoards(false);
+              router.push(`/boards/${b.name}`);
             }}
           >
             {b.name}

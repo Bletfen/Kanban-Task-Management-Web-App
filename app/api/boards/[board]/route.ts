@@ -6,9 +6,11 @@ export async function GET(
   { params }: { params: { board: string } }
 ) {
   const boardName = params.board;
-
-  const boardData = data.boards.find((b: TBoards) => b.name === boardName);
-  if (!boardData) {
+  const nameFromData = data.boards.some(
+    (board: IBoard) => board.name !== boardName
+  );
+  const boardData = data.boards.find((b) => b.name === boardName);
+  if (!boardData || nameFromData) {
     return NextResponse.json({ error: "Board not found" }, { status: 400 });
   }
   return NextResponse.json(boardData, { status: 200 });
