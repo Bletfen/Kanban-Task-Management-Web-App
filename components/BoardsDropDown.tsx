@@ -13,7 +13,7 @@ export default function BoardsDropDown({
 }) {
   const router = useRouter();
   return (
-    <div>
+    <div className="absolute top-full left-0  px-[1.6rem] z-50 bg-white">
       <h1>All Boards({boards.length})</h1>
       {boards.map((b) => (
         <div className="flex items-center gap-[1.2rem]">

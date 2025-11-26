@@ -16,7 +16,7 @@ export default function ThreeDotMenu({ type }: { type: string }) {
     }
   };
   return (
-    <div>
+    <div className="cursor-pointer">
       <svg
         onClick={handleMenu}
         width="5"
