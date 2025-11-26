@@ -21,7 +21,7 @@ export default function HeaderTitle({ boards }: { boards: TBoards }) {
         </g>
       </svg>
       <div className="flex items-center gap-[0.8rem]">
-        <h1>{title}</h1>
+        <h1 className="text-[1.8rem] text-[#000112] font-bold">{title}</h1>
         {!showBoards ? (
           <svg
             width="10"

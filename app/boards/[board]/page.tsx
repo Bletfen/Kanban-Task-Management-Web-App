@@ -9,7 +9,6 @@ export default async function BoardPage({
     `http://localhost:3000/api/boards/${boardName}`
   );
   const boardList = await fetchData.json();
-  console.log(boardList);
 
   if (!boardList || boardList.error) {
     return <h1>{boardList?.error || "Board Not Found"}</h1>;
