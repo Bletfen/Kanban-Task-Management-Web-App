@@ -1,3 +1,5 @@
+import ColumnsClient from "@/components/ColumnsClient";
+
 export default async function BoardPage({
   params,
 }: {
@@ -15,28 +17,8 @@ export default async function BoardPage({
   }
 
   return (
-    <div>
-      {boardList.columns.map((col: TColumns) => (
-        <div>
-          <p>{col.name}</p>
-          {col.tasks.map((task) => (
-            <div>
-              <h1>{task.title}</h1>
-              <p>
-                <span>
-                  {
-                    task.subtasks.filter(
-                      (subTask: TSubtasks) => subTask.isCompleted
-                    ).length
-                  }
-                </span>
-                of
-                <span>{task.subtasks.length}</span>
-              </p>
-            </div>
-          ))}
-        </div>
-      ))}
+    <div className="bg-[#f4f7fd] min-h-screen">
+      <ColumnsClient boardList={boardList} />
     </div>
   );
 }
