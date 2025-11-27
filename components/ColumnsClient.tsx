@@ -1,8 +1,11 @@
 "use client";
 import useEmblaCarousel from "embla-carousel-react";
+import { useState } from "react";
+import Task from "./Task";
 
 export default function ColumnsClient({ boardList }: { boardList: IBoard }) {
   const [emblaRef] = useEmblaCarousel();
+  const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   return (
     <div className="embla py-[2.4rem] px-[1.6rem]">
       <div className="embla_viewport overflow-hidden" ref={emblaRef}>
@@ -42,6 +45,9 @@ export default function ColumnsClient({ boardList }: { boardList: IBoard }) {
                     bg-white shadow-[0_0.4rem_0.6rem_0_rgba(54,78,126,0.1)]
                     rounded-[0.8rem] flex flex-col gap-[0.8rem]
                     cursor-pointer"
+                    onClick={() => {
+                      setSelectedTask(task);
+                    }}
                   >
                     <h1 className="text-[1.5rem] text-[#00112] font-bold">
                       {task.title}
@@ -68,6 +74,15 @@ export default function ColumnsClient({ boardList }: { boardList: IBoard }) {
           ))}
         </div>
       </div>
+      {selectedTask && (
+        <div
+          className="fixed inset-0 bg-black/50 z-50 p-[1.6rem]
+        flex items-center justify-center"
+          onClick={() => setSelectedTask(null)}
+        >
+          <Task task={selectedTask} />
+        </div>
+      )}
     </div>
   );
 }
