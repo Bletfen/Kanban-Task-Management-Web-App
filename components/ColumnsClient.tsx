@@ -3,14 +3,24 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useState } from "react";
 import Task from "./Task";
 
-export default function ColumnsClient({ boardList }: { boardList: IBoard }) {
+export default function ColumnsClient({
+  boardsData,
+  boardName,
+}: {
+  boardsData: IBoard;
+  boardName: string;
+}) {
   const [emblaRef] = useEmblaCarousel();
-  const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
+  const [selectedTask, setSelectedTask] = useState<{
+    task: ITask;
+    columnName: string;
+  } | null>();
+
   return (
     <div className="embla py-[2.4rem] px-[1.6rem]">
       <div className="embla_viewport overflow-hidden" ref={emblaRef}>
         <div className="embla_container flex gap-[2.4rem]">
-          {boardList.columns.map((col: TColumns, index) => (
+          {boardsData.columns.map((col: TColumns, index) => (
             <div
               key={index}
               className="embla_slide flex-[0_0_28rem]
@@ -46,7 +56,7 @@ export default function ColumnsClient({ boardList }: { boardList: IBoard }) {
                     rounded-[0.8rem] flex flex-col gap-[0.8rem]
                     cursor-pointer"
                     onClick={() => {
-                      setSelectedTask(task);
+                      setSelectedTask({ task, columnName: col.name });
                     }}
                   >
                     <h1 className="text-[1.5rem] text-[#00112] font-bold">
@@ -80,7 +90,11 @@ export default function ColumnsClient({ boardList }: { boardList: IBoard }) {
         flex items-center justify-center"
           onClick={() => setSelectedTask(null)}
         >
-          <Task task={selectedTask} />
+          <Task
+            selectedTask={selectedTask.task}
+            boardName={boardName}
+            columnName={selectedTask.columnName}
+          />
         </div>
       )}
     </div>

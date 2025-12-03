@@ -7,18 +7,21 @@ export default async function BoardPage({
 }) {
   const { board } = await params;
   const boardName = decodeURIComponent(board);
-  const fetchData = await fetch(
-    `http://localhost:3000/api/boards/${boardName}`
+  const fetchBoards = await fetch(
+    `http://localhost:3000/api/boards/${boardName}`,
+    {
+      cache: "no-cache",
+    }
   );
-  const boardList = await fetchData.json();
+  const boardsData = await fetchBoards.json();
 
-  if (!boardList || boardList.error) {
-    return <h1>{boardList?.error || "Board Not Found"}</h1>;
+  if (!boardsData || boardsData.error) {
+    return <h1>{boardsData?.error || "Board Not Found"}</h1>;
   }
 
   return (
     <div className="bg-[#f4f7fd] min-h-screen">
-      <ColumnsClient boardList={boardList} />
+      <ColumnsClient boardsData={boardsData} boardName={boardName} />
     </div>
   );
 }

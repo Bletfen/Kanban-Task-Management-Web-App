@@ -1,4 +1,49 @@
-export default function Task({ task }: { task: ITask }) {
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+export default function Task({
+  selectedTask,
+  boardName,
+  columnName,
+}: {
+  selectedTask: ITask;
+  boardName: string;
+  columnName: string;
+}) {
+  const router = useRouter();
+  const [localTask, setLocalTask] = useState(selectedTask);
+
+  const saveTask = async (subtaskIndex: number) => {
+    const updateSubTasks = localTask.subtasks.map((sub, index) =>
+      index === subtaskIndex ? { ...sub, isCompleted: !sub.isCompleted } : sub
+    );
+
+    const updatedTask = { ...localTask, subtasks: updateSubTasks };
+    setLocalTask(updatedTask);
+
+    try {
+      const response = await fetch(
+        `/api/boards/${encodeURIComponent(
+          boardName
+        )}/columns/${encodeURIComponent(columnName)}/tasks/${encodeURIComponent(
+          selectedTask.title
+        )}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ subtasks: updateSubTasks }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("failed to update task");
+      }
+    } catch {
+      setLocalTask(selectedTask);
+    }
+  };
   return (
     <div
       className="pt-[2.4rem] pb-[3.2rem]
@@ -6,9 +51,12 @@ export default function Task({ task }: { task: ITask }) {
         z-50 flex flex-col gap-[2.4rem]
         w-full min-w-[34rem] max-w-[48rem]
         "
+      onClick={(e) => e.stopPropagation()}
     >
       <div className="flex items-center justify-between">
-        <h1 className="text-[1.8rem] font-bold text-[#000112]">{task.title}</h1>
+        <h1 className="text-[1.8rem] font-bold text-[#000112]">
+          {localTask?.title}
+        </h1>
         <svg
           className="shrink-0 cursor-pointer"
           width="5"
@@ -26,17 +74,18 @@ export default function Task({ task }: { task: ITask }) {
         className="text-[1.3rem] font-[500]
         leading-[1.77] text-[#828fa3]"
       >
-        {task.description}
+        {localTask?.description}
       </p>
       <div className="flex flex-col gap-[0.8rem]">
         <p
           className="text-[1.2rem] font-bold text-[#828fa3]
         font-bold"
         >
-          Subtasks ({task.subtasks.filter((sub) => sub.isCompleted).length} of{" "}
-          {task.subtasks.length})
+          Subtasks (
+          {localTask?.subtasks.filter((sub) => sub.isCompleted).length} of{" "}
+          {localTask?.subtasks.length})
         </p>
-        {task.subtasks.map((sub, index) => (
+        {localTask?.subtasks.map((sub, index) => (
           <div
             key={index}
             className="pl-[1.2rem] pr-[0.8rem]
@@ -44,6 +93,7 @@ export default function Task({ task }: { task: ITask }) {
             flex items-center gap-[1.6rem]
             bg-[#f3f7fd] rounded-[0.4rem]
             "
+            onClick={() => saveTask(index)}
           >
             {sub.isCompleted ? (
               <div
@@ -103,7 +153,7 @@ export default function Task({ task }: { task: ITask }) {
             className="text-[1.3rem] font-[500] 
           leading-[1.77] text-[#000112]"
           >
-            {task.status}
+            {localTask?.status}
           </span>
           <svg width="10" height="7" xmlns="http://www.w3.org/2000/svg">
             <path

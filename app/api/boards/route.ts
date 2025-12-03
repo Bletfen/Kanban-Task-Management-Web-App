@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import data from "../../../data/data.json";
+import data from "@data/data.json";
+
 export async function GET(res: Request) {
   const boards = data.boards;
   if (!boards) {

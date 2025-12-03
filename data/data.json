@@ -7,7 +7,6 @@
           "name": "Todo",
           "tasks": [
             {
-              "id": 1,
               "title": "Build UI for onboarding flow",
               "description": "",
               "status": "Todo",

@@ -1,18 +1,14 @@
 import { NextResponse } from "next/server";
-import data from "../../../../data/data.json";
+import data from "@data/data.json";
 
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ board: string }> }
 ) {
   const boardName = await params;
-  const nameFromData = data.boards.some(
-    (board: IBoard) => board.name !== boardName.board
-  );
   const boardData = data.boards.find((b) => b.name === boardName.board);
 
-  console.log(boardData);
-  if (!boardData || !nameFromData) {
+  if (!boardData) {
     return NextResponse.json({ error: "Board not found" }, { status: 400 });
   }
   return NextResponse.json(boardData, { status: 200 });
