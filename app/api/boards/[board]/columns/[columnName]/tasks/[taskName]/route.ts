@@ -26,15 +26,11 @@ export async function PUT(
 
   const body = await req.json();
 
-  if (body.subtasks) {
-    findTask.subtasks = body.subtasks;
-  }
-  if (body.status) {
-    findTask.status = body.status;
-  }
+  const updatedBoard = {...findBoard,columns:{...findColumn, tasks:{...findTask,...body}} }
 
+  const updatedTaks = { ...findTask, ...body };
+  data = 
   return NextResponse.json({
-    success: true,
-    task: findTask,
+    updatedTaks,
   });
 }
