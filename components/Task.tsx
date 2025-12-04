@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import StatusDropDown from "./StatusDropDown";
 
 export default function Task({
   selectedTask,
@@ -12,38 +13,85 @@ export default function Task({
 }) {
   const router = useRouter();
   const [localTask, setLocalTask] = useState(selectedTask);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [currentColumn, setCurrentColumn] = useState<string>(columnName);
 
   const saveTask = async (subtaskIndex: number) => {
     const updateSubTasks = localTask.subtasks.map((sub, index) =>
       index === subtaskIndex ? { ...sub, isCompleted: !sub.isCompleted } : sub
     );
 
-    const updatedTask = { ...localTask, subtasks: updateSubTasks };
+    const updatedTask = {
+      ...localTask,
+      subtasks: updateSubTasks,
+    };
+
     setLocalTask(updatedTask);
 
     try {
       const response = await fetch(
         `/api/boards/${encodeURIComponent(
           boardName
-        )}/columns/${encodeURIComponent(columnName)}/tasks/${encodeURIComponent(
-          selectedTask.title
-        )}`,
+        )}/columns/${encodeURIComponent(
+          currentColumn
+        )}/tasks/${encodeURIComponent(selectedTask.title)}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ subtasks: updateSubTasks }),
+          body: JSON.stringify({
+            subtasks: updateSubTasks,
+          }),
         }
       );
 
       if (!response.ok) {
         throw new Error("failed to update task");
       }
+      router.refresh();
     } catch {
       setLocalTask(selectedTask);
     }
   };
+
+  const changeStatus = async (newStatus: string) => {
+    const updatedTask = {
+      ...localTask,
+      status: newStatus,
+    };
+
+    setLocalTask(updatedTask);
+    setShowMenu(false);
+
+    try {
+      const response = await fetch(
+        `/api/boards/${encodeURIComponent(
+          boardName
+        )}/columns/${encodeURIComponent(
+          currentColumn
+        )}/tasks/${encodeURIComponent(selectedTask.title)}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedTask),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("failed to update task");
+      }
+
+      setCurrentColumn(newStatus);
+      setShowMenu(false);
+      router.refresh();
+    } catch {
+      setLocalTask(selectedTask);
+    }
+  };
+
   return (
     <div
       className="pt-[2.4rem] pb-[3.2rem]
@@ -92,6 +140,8 @@ export default function Task({
             pt-[1.3rem] pb-[1.6rem]
             flex items-center gap-[1.6rem]
             bg-[#f3f7fd] rounded-[0.4rem]
+            hover:bg-[#635fc7]/25 cursor-pointer
+            transition-all duration-300
             "
             onClick={() => saveTask(index)}
           >
@@ -145,9 +195,15 @@ export default function Task({
           Current Status
         </p>
         <div
-          className="py-[0.8rem] px-[1.6rem] 
-            rounded-[0.4rem] border border-[rgba(130,143,163,0.25)]
-            flex items-center justify-between"
+          className={`py-[0.8rem] px-[1.6rem] 
+            rounded-[0.4rem] border
+            flex items-center justify-between
+            relative cursor-pointer
+            transition-all duration-300
+            ${
+              showMenu ? "border-[#635fc7]" : "border-[rgba(130,143,163,0.25)]"
+            }`}
+          onClick={() => setShowMenu((prev) => !prev)}
         >
           <span
             className="text-[1.3rem] font-[500] 
@@ -155,14 +211,31 @@ export default function Task({
           >
             {localTask?.status}
           </span>
-          <svg width="10" height="7" xmlns="http://www.w3.org/2000/svg">
-            <path
-              stroke="#635FC7"
-              strokeWidth="2"
-              fill="none"
-              d="m1 1 4 4 4-4"
+          {!showMenu ? (
+            <svg width="10" height="7" xmlns="http://www.w3.org/2000/svg">
+              <path
+                stroke="#635FC7"
+                strokeWidth="2"
+                fill="none"
+                d="m1 1 4 4 4-4"
+              />
+            </svg>
+          ) : (
+            <svg width="10" height="7" xmlns="http://www.w3.org/2000/svg">
+              <path
+                stroke="#635FC7"
+                strokeWidth="2"
+                fill="none"
+                d="M9 6 5 2 1 6"
+              />
+            </svg>
+          )}
+          {showMenu && (
+            <StatusDropDown
+              setShowMenu={setShowMenu}
+              changeStatus={changeStatus}
             />
-          </svg>
+          )}
         </div>
       </div>
     </div>

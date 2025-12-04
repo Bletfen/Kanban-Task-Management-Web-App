@@ -26,11 +26,66 @@ export async function PUT(
 
   const body = await req.json();
 
-  const updatedBoard = {...findBoard,columns:{...findColumn, tasks:{...findTask,...body}} }
+  const newStatus = body.status;
 
-  const updatedTaks = { ...findTask, ...body };
-  data = 
+  // თუ status შეიცვალა და სხვა column-შია
+  if (newStatus && newStatus !== columnName) {
+    const targetColumn = findBoard.columns.find((c) => c.name === newStatus);
+    if (!targetColumn) {
+      return NextResponse.json(
+        { error: "Target column not found" },
+        { status: 400 }
+      );
+    }
+
+    // გადაიტანე task ახალ column-ში
+    const updatedBoard = data.boards.map((b) =>
+      b.name === board
+        ? {
+            ...b,
+            columns: b.columns.map((c) => {
+              if (c.name === columnName) {
+                // წაშალე ძველი column-დან
+                return {
+                  ...c,
+                  tasks: c.tasks.filter((t) => t.title !== taskName),
+                };
+              } else if (c.name === newStatus) {
+                // დაამატე ახალ column-ში
+                return {
+                  ...c,
+                  tasks: [...c.tasks, { ...findTask, ...body }],
+                };
+              }
+              return c;
+            }),
+          }
+        : b
+    );
+    data.boards = updatedBoard;
+  } else {
+    // უბრალოდ განაახლე task იგივე column-ში
+    const updatedBoard = data.boards.map((b) =>
+      b.name === board
+        ? {
+            ...b,
+            columns: b.columns.map((c) =>
+              c.name === columnName
+                ? {
+                    ...c,
+                    tasks: c.tasks.map((t) =>
+                      t.title === taskName ? { ...t, ...body } : t
+                    ),
+                  }
+                : c
+            ),
+          }
+        : b
+    );
+    data.boards = updatedBoard;
+  }
+
   return NextResponse.json({
-    updatedTaks,
+    message: "Data changed",
   });
 }
