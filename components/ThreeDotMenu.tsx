@@ -1,12 +1,34 @@
 "use client";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Edit_DeleteDropDown from "./Edit_DeleteDropDown";
 import Form from "./Form";
+import DeletePopUp from "./DeletePopUp";
 
-export default function ThreeDotMenu({ type }: { type: string }) {
-  const [showEditDelete, setShowEditDelete] = useState<boolean>(false);
+export default function ThreeDotMenu({
+  type,
+  boardName,
+  columnName,
+  taskName,
+  setSelectedTask,
+}: {
+  type: string;
+  boardName?: string;
+  columnName?: string;
+  taskName?: string;
+  setSelectedTask?: Dispatch<
+    SetStateAction<
+      | {
+          task: ITask;
+          columnName: string;
+        }
+      | null
+      | undefined
+    >
+  >;
+}) {
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);
+  const [showEditDelete, setShowEditDelete] = useState<boolean>(false);
 
   const handleMenu = () => {
     if (showEditDelete) {
@@ -16,7 +38,7 @@ export default function ThreeDotMenu({ type }: { type: string }) {
     }
   };
   return (
-    <div className="cursor-pointer">
+    <div className="cursor-pointer relative">
       <svg
         onClick={handleMenu}
         width="5"
@@ -31,12 +53,23 @@ export default function ThreeDotMenu({ type }: { type: string }) {
       </svg>
       {showEditDelete && (
         <Edit_DeleteDropDown
+          type={type}
           setShowEditDelete={setShowEditDelete}
           setShowEdit={setShowEdit}
           setShowDelete={setShowDelete}
         />
       )}
       {showEdit && <Form type={type} setShowEdit={setShowEdit} />}
+      {showDelete && (
+        <DeletePopUp
+          type={type}
+          setShowDelete={setShowDelete}
+          boardName={boardName}
+          columnName={columnName}
+          taskName={taskName}
+          setSelectedTask={setSelectedTask}
+        />
+      )}
     </div>
   );
 }

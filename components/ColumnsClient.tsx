@@ -43,7 +43,7 @@ export default function ColumnsClient({
                   className="text-[1.2rem] tracking-[0.24] text-[#828fa3]
                 font-bold"
                 >
-                  {col.name} <span>({col.name.length})</span>
+                  {col.name} <span>({col.tasks.length})</span>
                 </p>
               </div>
 
@@ -88,12 +88,15 @@ export default function ColumnsClient({
         <div
           className="fixed inset-0 bg-black/50 z-50 p-[1.6rem]
         flex items-center justify-center"
-          onClick={() => setSelectedTask(null)}
+          onClick={() => {
+            setSelectedTask(null);
+          }}
         >
           <Task
             selectedTask={selectedTask.task}
             boardName={boardName}
             columnName={selectedTask.columnName}
+            setSelectedTask={setSelectedTask}
           />
         </div>
       )}

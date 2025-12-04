@@ -5,12 +5,15 @@ export default function HeaderTitle({
   boards,
   showBoards,
   setShowBoards,
+  setTitle,
+  title,
 }: {
   boards: TBoards;
   showBoards: boolean;
   setShowBoards: Dispatch<SetStateAction<boolean>>;
+  setTitle: Dispatch<SetStateAction<string>>;
+  title: string;
 }) {
-  const [title, setTitle] = useState<string>(boards[0].name || "Not Found");
   const handleDropDown = () => {
     if (!showBoards) {
       setShowBoards(true);

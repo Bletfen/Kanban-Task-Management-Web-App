@@ -5,6 +5,8 @@ import ThreeDotMenu from "./ThreeDotMenu";
 
 export default function HeaderClient({ boards }: { boards: TBoards }) {
   const [showBoards, setShowBoards] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>(boards[0].name || "Not Found");
+  console.log(boards);
   return (
     <div className="relative">
       {showBoards && (
@@ -21,6 +23,8 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
           boards={boards}
           showBoards={showBoards}
           setShowBoards={setShowBoards}
+          setTitle={setTitle}
+          title={title}
         />
         <div className="flex items-center gap-[1.6rem]">
           <button

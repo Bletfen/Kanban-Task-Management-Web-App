@@ -1,15 +1,27 @@
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import StatusDropDown from "./StatusDropDown";
+import ThreeDotMenu from "./ThreeDotMenu";
 
 export default function Task({
   selectedTask,
   boardName,
   columnName,
+  setSelectedTask,
 }: {
   selectedTask: ITask;
   boardName: string;
   columnName: string;
+  setSelectedTask: Dispatch<
+    SetStateAction<
+      | {
+          task: ITask;
+          columnName: string;
+        }
+      | null
+      | undefined
+    >
+  >;
 }) {
   const router = useRouter();
   const [localTask, setLocalTask] = useState(selectedTask);
@@ -105,18 +117,13 @@ export default function Task({
         <h1 className="text-[1.8rem] font-bold text-[#000112]">
           {localTask?.title}
         </h1>
-        <svg
-          className="shrink-0 cursor-pointer"
-          width="5"
-          height="20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g fill="#828FA3" fillRule="evenodd">
-            <circle cx="2.308" cy="2.308" r="2.308" />
-            <circle cx="2.308" cy="10" r="2.308" />
-            <circle cx="2.308" cy="17.692" r="2.308" />
-          </g>
-        </svg>
+        <ThreeDotMenu
+          type={"task"}
+          boardName={boardName}
+          columnName={currentColumn}
+          taskName={selectedTask.title}
+          setSelectedTask={setSelectedTask}
+        />
       </div>
       <p
         className="text-[1.3rem] font-[500]
