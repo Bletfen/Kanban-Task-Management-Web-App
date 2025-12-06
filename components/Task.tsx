@@ -125,6 +125,7 @@ export default function Task({
           setSelectedTask={setSelectedTask}
           localTask={localTask}
           setLocalTask={setLocalTask}
+          onStatusChange={setCurrentColumn}
         />
       </div>
       <p
