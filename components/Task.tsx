@@ -123,11 +123,14 @@ export default function Task({
           columnName={currentColumn}
           taskName={selectedTask.title}
           setSelectedTask={setSelectedTask}
+          localTask={localTask}
+          setLocalTask={setLocalTask}
         />
       </div>
       <p
         className="text-[1.3rem] font-[500]
-        leading-[1.77] text-[#828fa3]"
+        leading-[1.77] text-[#828fa3]
+        break-words"
       >
         {localTask?.description}
       </p>
@@ -237,12 +240,7 @@ export default function Task({
               />
             </svg>
           )}
-          {showMenu && (
-            <StatusDropDown
-              setShowMenu={setShowMenu}
-              changeStatus={changeStatus}
-            />
-          )}
+          {showMenu && <StatusDropDown changeStatus={changeStatus} />}
         </div>
       </div>
     </div>

@@ -1,11 +1,10 @@
 "use client";
-import { Dispatch, SetStateAction } from "react";
 export default function StatusDropDown({
-  setShowMenu,
   changeStatus,
+  statusChangeHandler,
 }: {
-  setShowMenu: Dispatch<SetStateAction<boolean>>;
-  changeStatus: (newStatus: string) => Promise<void>;
+  changeStatus?: (newStatus: string) => Promise<void>;
+  statusChangeHandler?: (st: string) => void;
 }) {
   return (
     <div
@@ -16,9 +15,30 @@ export default function StatusDropDown({
         flex flex-col gap-[0.8rem]
         text-[1.3rem] font-[500] text-[#828fa3]"
     >
-      <p onClick={() => changeStatus("Todo")}>Todo</p>
-      <p onClick={() => changeStatus("Doing")}>Doing</p>
-      <p onClick={() => changeStatus("Done")}>Done</p>
+      <p
+        onClick={() => {
+          changeStatus?.("Todo");
+          statusChangeHandler?.("Todo");
+        }}
+      >
+        Todo
+      </p>
+      <p
+        onClick={() => {
+          changeStatus?.("Doing");
+          statusChangeHandler?.("Doing");
+        }}
+      >
+        Doing
+      </p>
+      <p
+        onClick={() => {
+          changeStatus?.("Done");
+          statusChangeHandler?.("Done");
+        }}
+      >
+        Done
+      </p>
     </div>
   );
 }

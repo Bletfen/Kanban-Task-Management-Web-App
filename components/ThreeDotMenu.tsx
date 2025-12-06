@@ -10,6 +10,9 @@ export default function ThreeDotMenu({
   columnName,
   taskName,
   setSelectedTask,
+  localTask,
+  setLocalTask,
+  onStatusChange,
 }: {
   type: string;
   boardName?: string;
@@ -25,6 +28,9 @@ export default function ThreeDotMenu({
       | undefined
     >
   >;
+  localTask?: ITask;
+  setLocalTask?: Dispatch<SetStateAction<ITask>>;
+  onStatusChange?: Dispatch<SetStateAction<string>>;
 }) {
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);
@@ -59,7 +65,19 @@ export default function ThreeDotMenu({
           setShowDelete={setShowDelete}
         />
       )}
-      {showEdit && <Form type={type} setShowEdit={setShowEdit} />}
+      {showEdit && (
+        <Form
+          type={type}
+          setShowEdit={setShowEdit}
+          boardName={boardName}
+          columnName={columnName}
+          taskName={taskName}
+          setSelectedTask={setSelectedTask}
+          localTask={localTask}
+          setLocalTask={setLocalTask}
+          onStatusChange={onStatusChange}
+        />
+      )}
       {showDelete && (
         <DeletePopUp
           type={type}
