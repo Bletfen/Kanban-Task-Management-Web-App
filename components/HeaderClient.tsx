@@ -6,7 +6,6 @@ import ThreeDotMenu from "./ThreeDotMenu";
 export default function HeaderClient({ boards }: { boards: TBoards }) {
   const [showBoards, setShowBoards] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(boards[0].name || "Not Found");
-  console.log(boards);
   return (
     <div className="relative">
       {showBoards && (
@@ -38,7 +37,7 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
               />
             </svg>
           </button>
-          <ThreeDotMenu type={"board"} />
+          <ThreeDotMenu type={"board"} boardNameFromHeader={title} />
         </div>
       </div>
     </div>

@@ -13,8 +13,10 @@ export default function ThreeDotMenu({
   localTask,
   setLocalTask,
   onStatusChange,
+  boardNameFromHeader,
 }: {
   type: string;
+  boardNameFromHeader?: string;
   boardName?: string;
   columnName?: string;
   taskName?: string;
@@ -76,6 +78,7 @@ export default function ThreeDotMenu({
           localTask={localTask}
           setLocalTask={setLocalTask}
           onStatusChange={onStatusChange}
+          boardNameFromHeader={boardNameFromHeader}
         />
       )}
       {showDelete && (
@@ -84,7 +87,7 @@ export default function ThreeDotMenu({
           setShowDelete={setShowDelete}
           boardName={boardName}
           columnName={columnName}
-          taskName={taskName}
+          taskName={localTask?.title}
           setSelectedTask={setSelectedTask}
         />
       )}
