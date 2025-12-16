@@ -13,11 +13,10 @@ export default function ThreeDotMenu({
   localTask,
   setLocalTask,
   onStatusChange,
-  boardNameFromHeader,
+  boards,
 }: {
   type: string;
-  boardNameFromHeader?: string;
-  boardName?: string;
+  boardName: string;
   columnName?: string;
   taskName?: string;
   setSelectedTask?: Dispatch<
@@ -33,6 +32,7 @@ export default function ThreeDotMenu({
   localTask?: ITask;
   setLocalTask?: Dispatch<SetStateAction<ITask>>;
   onStatusChange?: Dispatch<SetStateAction<string>>;
+  boards?: TBoards;
 }) {
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);
@@ -78,7 +78,7 @@ export default function ThreeDotMenu({
           localTask={localTask}
           setLocalTask={setLocalTask}
           onStatusChange={onStatusChange}
-          boardNameFromHeader={boardNameFromHeader}
+          boards={boards}
         />
       )}
       {showDelete && (

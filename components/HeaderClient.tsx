@@ -37,7 +37,7 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
               />
             </svg>
           </button>
-          <ThreeDotMenu type={"board"} boardNameFromHeader={title} />
+          <ThreeDotMenu type={"board"} boardName={title} boards={boards} />
         </div>
       </div>
     </div>
