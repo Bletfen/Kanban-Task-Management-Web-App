@@ -46,6 +46,18 @@ export default function DeletePopUp({
       throw new Error("Couldn't delete task");
     }
   };
+
+  const deleteBoard = async () => {
+    if (!boardName) return;
+    try {
+      await fetch(`/api/boards/${encodeURIComponent(boardName)}`, {
+        method: "DELETE",
+      });
+      router.refresh();
+    } catch (err) {
+      throw new Error("Couldn't delete board");
+    }
+  };
   return (
     <div
       className="fixed inset-0 bg-black/50 flex items-center 
@@ -61,10 +73,11 @@ export default function DeletePopUp({
       >
         <div className="flex flex-col gap-[2.4rem]">
           <h1 className="text-[1.8rem] font-bold text-[#ea5555]">
-            Delete this task?
+            {type === "board" ? "Delete this board?" : "Delete this task?"}
           </h1>
           <p className="text-[1.3rem] font-[500] text-[#828fa3]">
-            Are you sure you want to delete the ‘Build settings UI’ task and its
+            Are you sure you want to delete the{" "}
+            {type === "board" ? `"${boardName}"` : `"${taskName}"`} task and its
             subtasks? This action cannot be reversed.
           </p>
         </div>
@@ -78,7 +91,7 @@ export default function DeletePopUp({
           text-[1.3rem] leading-[1.77]
           font-bold text-white
           cursor-pointer"
-            onClick={deleteTask}
+            onClick={type === "board" ? deleteBoard : deleteTask}
           >
             Delete
           </button>

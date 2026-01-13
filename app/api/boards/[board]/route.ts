@@ -82,3 +82,19 @@ export async function PUT(
 
   return NextResponse.json({ message: "Board updated" });
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ board: string }> }
+) {
+  const { board } = await params;
+  const existingBoard = data.boards.find((b) => b.name === board);
+  if (!existingBoard) {
+    return NextResponse.json({ error: "Board not found" }, { status: 400 });
+  }
+  const updatedBoards = (data.boards = data.boards.filter(
+    (b) => b.name !== board
+  ));
+  data.boards = updatedBoards;
+  return NextResponse.json({ message: "Board deleted" });
+}

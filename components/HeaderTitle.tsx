@@ -1,18 +1,17 @@
 "use client";
 import { Dispatch, SetStateAction, useState } from "react";
 import BoardsDropDown from "./BoardsDropDown";
+import { ParamValue } from "next/dist/server/request/params";
 export default function HeaderTitle({
   boards,
   showBoards,
   setShowBoards,
-  setTitle,
-  title,
+  paramsBoardName,
 }: {
   boards: TBoards;
   showBoards: boolean;
   setShowBoards: Dispatch<SetStateAction<boolean>>;
-  setTitle: Dispatch<SetStateAction<string>>;
-  title: string;
+  paramsBoardName: ParamValue;
 }) {
   const handleDropDown = () => {
     if (!showBoards) {
@@ -36,7 +35,7 @@ export default function HeaderTitle({
             className="text-[1.8rem] text-[#000112] font-bold"
             onClick={handleDropDown}
           >
-            {title}
+            {paramsBoardName}
           </h1>
           {!showBoards ? (
             <svg
@@ -69,11 +68,7 @@ export default function HeaderTitle({
           )}
         </div>
         {showBoards && (
-          <BoardsDropDown
-            boards={boards}
-            setShowBoards={setShowBoards}
-            setTitle={setTitle}
-          />
+          <BoardsDropDown boards={boards} setShowBoards={setShowBoards} />
         )}
       </div>
     </>

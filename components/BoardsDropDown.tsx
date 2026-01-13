@@ -5,11 +5,9 @@ import { Dispatch, SetStateAction } from "react";
 export default function BoardsDropDown({
   boards,
   setShowBoards,
-  setTitle,
 }: {
   boards: TBoards;
   setShowBoards: Dispatch<SetStateAction<boolean>>;
-  setTitle: Dispatch<SetStateAction<string>>;
 }) {
   const router = useRouter();
   return (
@@ -25,7 +23,6 @@ export default function BoardsDropDown({
           </svg>
           <p
             onClick={() => {
-              setTitle(b.name);
               setShowBoards(false);
               router.push(`/boards/${b.name}`);
             }}

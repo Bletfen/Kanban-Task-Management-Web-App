@@ -2,10 +2,16 @@
 import { useState } from "react";
 import HeaderTitle from "./HeaderTitle";
 import ThreeDotMenu from "./ThreeDotMenu";
+import { useParams } from "next/navigation";
 
 export default function HeaderClient({ boards }: { boards: TBoards }) {
   const [showBoards, setShowBoards] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>(boards[0].name || "Not Found");
+  const params = useParams();
+  const paramsBoardName = params.board;
+  const decodedBoardName = decodeURIComponent(
+    (Array.isArray(paramsBoardName) ? paramsBoardName[0] : paramsBoardName) ||
+      ""
+  );
   return (
     <div className="relative">
       {showBoards && (
@@ -22,8 +28,7 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
           boards={boards}
           showBoards={showBoards}
           setShowBoards={setShowBoards}
-          setTitle={setTitle}
-          title={title}
+          paramsBoardName={decodedBoardName}
         />
         <div className="flex items-center gap-[1.6rem]">
           <button
@@ -37,7 +42,11 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
               />
             </svg>
           </button>
-          <ThreeDotMenu type={"board"} boardName={title} boards={boards} />
+          <ThreeDotMenu
+            type={"board"}
+            boardName={decodedBoardName}
+            boards={boards}
+          />
         </div>
       </div>
     </div>
