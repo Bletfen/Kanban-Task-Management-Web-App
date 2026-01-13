@@ -1,11 +1,31 @@
 "use client";
+
+import { useEffect, useState } from "react";
+
 export default function StatusDropDown({
   changeStatus,
   statusChangeHandler,
+  boardName,
 }: {
   changeStatus?: (newStatus: string) => Promise<void>;
   statusChangeHandler?: (st: string) => void;
+  boardName: string;
 }) {
+  const [names, setNames] = useState<string[] | null>([]);
+  const columnsNames = async () => {
+    try {
+      const response = await fetch(`/api/boards/${boardName}`);
+      const boardData = await response.json();
+      const columnsNamesArray = boardData.columns.map((c: TColumns) => c.name);
+      setNames(columnsNamesArray);
+    } catch (err) {
+      console.error("Failed to fetch column names:", err);
+    }
+  };
+
+  useEffect(() => {
+    columnsNames();
+  }, []);
   return (
     <div
       className="absolute top-20 left-0
@@ -15,30 +35,17 @@ export default function StatusDropDown({
         flex flex-col gap-[0.8rem]
         text-[1.3rem] font-[500] text-[#828fa3]"
     >
-      <p
-        onClick={() => {
-          changeStatus?.("Todo");
-          statusChangeHandler?.("Todo");
-        }}
-      >
-        Todo
-      </p>
-      <p
-        onClick={() => {
-          changeStatus?.("Doing");
-          statusChangeHandler?.("Doing");
-        }}
-      >
-        Doing
-      </p>
-      <p
-        onClick={() => {
-          changeStatus?.("Done");
-          statusChangeHandler?.("Done");
-        }}
-      >
-        Done
-      </p>
+      {names?.map((n) => (
+        <p
+          key={n}
+          onClick={() => {
+            changeStatus?.(n);
+            statusChangeHandler?.(n);
+          }}
+        >
+          {n}
+        </p>
+      ))}
     </div>
   );
 }

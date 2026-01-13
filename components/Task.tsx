@@ -241,7 +241,9 @@ export default function Task({
               />
             </svg>
           )}
-          {showMenu && <StatusDropDown changeStatus={changeStatus} />}
+          {showMenu && (
+            <StatusDropDown changeStatus={changeStatus} boardName={boardName} />
+          )}
         </div>
       </div>
     </div>
