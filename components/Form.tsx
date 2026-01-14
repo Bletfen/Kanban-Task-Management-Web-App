@@ -62,7 +62,6 @@ export default function Form({
       subtasks: [],
     }
   );
-  const [newBoardTitle, setNewBoardTitle] = useState<string>("");
 
   const titleErrorHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.value.trim()) {
@@ -226,13 +225,16 @@ export default function Form({
         status: taskState.status,
         subtasks: taskState.subtasks.filter((sub) => sub.title.trim()),
       };
-      const res = await fetch(`/api/boards/${encodeURIComponent(!boardName)}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(taskToCreate),
-      });
+      const res = await fetch(
+        `/api/boards/${encodeURIComponent(boardName || "")}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(taskToCreate),
+        }
+      );
       setShowEdit(false);
       router.refresh();
     } catch (error) {
@@ -241,7 +243,7 @@ export default function Form({
   };
 
   const addNewBoard = async () => {
-    if (newBoardTitle.trim() === "") {
+    if (boardTitle.trim() === "") {
       setErrorTitle(true);
       return;
     }
@@ -260,7 +262,7 @@ export default function Form({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: newBoardTitle,
+          name: boardTitle.trim(),
           columns,
         }),
       });
@@ -268,7 +270,7 @@ export default function Form({
         throw new Error("Cannot create board");
       }
       setShowEdit(false);
-      router.push(`/boards/${encodeURIComponent(newBoardTitle)}`);
+      router.push(`/boards/${encodeURIComponent(boardTitle.trim())}`);
       router.refresh();
     } catch (err) {
       console.error(err);
@@ -338,7 +340,7 @@ export default function Form({
                     title: e.target.value,
                   }));
                 } else {
-                  setNewBoardTitle(e.target.value);
+                  setBoardTitle(e.target.value);
                 }
                 titleErrorHandler(e);
               }}
