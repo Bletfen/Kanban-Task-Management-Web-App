@@ -13,7 +13,7 @@ export default function StatusChange({
   status: string | undefined;
   showDropDown: boolean;
   statusChangeHandler: (st: string) => void;
-  boardName: string;
+  boardName?: string;
   statusNames?: string[];
 }) {
   return (

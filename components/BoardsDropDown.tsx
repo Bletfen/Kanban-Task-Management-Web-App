@@ -1,6 +1,7 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import Form from "./Form";
 
 export default function BoardsDropDown({
   boards,
@@ -10,9 +11,16 @@ export default function BoardsDropDown({
   setShowBoards: Dispatch<SetStateAction<boolean>>;
 }) {
   const router = useRouter();
+  const params = useParams();
+  const paramsBoardName = params.board;
+  const decodedBoardName = decodeURIComponent(
+    (Array.isArray(paramsBoardName) ? paramsBoardName[0] : paramsBoardName) ||
+      ""
+  );
   const [isDark, setIsDark] = useState<boolean>(
     localStorage.getItem("theme") === "dark" ? true : false
   );
+  const [addNewBoard, setAddNewBoard] = useState<boolean>(false);
 
   useEffect(() => {
     if (isDark) {
@@ -43,14 +51,24 @@ export default function BoardsDropDown({
           <div>
             <div
               key={b.name}
-              className="flex items-center gap-[1.2rem]
+              className={`flex items-center gap-[1.2rem]
               cursor-pointer pl-[2.4rem]
-              py-[1.4rem]"
+              py-[1.4rem]
+              ${
+                decodedBoardName === b.name ? "bg-[#635fc7] rounded-r-full" : ""
+              }`}
             >
-              <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                className={`${
+                  decodedBoardName === b.name ? "text-white" : "text-[#828fa3]"
+                }`}
+                width="16"
+                height="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path
                   d="M0 2.889A2.889 2.889 0 0 1 2.889 0H13.11A2.889 2.889 0 0 1 16 2.889V13.11A2.888 2.888 0 0 1 13.111 16H2.89A2.889 2.889 0 0 1 0 13.111V2.89Zm1.333 5.555v4.667c0 .859.697 1.556 1.556 1.556h6.889V8.444H1.333Zm8.445-1.333V1.333h-6.89A1.556 1.556 0 0 0 1.334 2.89V7.11h8.445Zm4.889-1.333H11.11v4.444h3.556V5.778Zm0 5.778H11.11v3.11h2a1.556 1.556 0 0 0 1.556-1.555v-1.555Zm0-7.112V2.89a1.555 1.555 0 0 0-1.556-1.556h-2v3.111h3.556Z"
-                  fill="#828FA3"
+                  fill="currentColor"
                 />
               </svg>
               <p
@@ -58,7 +76,12 @@ export default function BoardsDropDown({
                   setShowBoards(false);
                   router.push(`/boards/${b.name}`);
                 }}
-                className="text-[1.5rem] text-[#828fa3] font-bold"
+                className={`text-[1.5rem] font-bold
+                  ${
+                    decodedBoardName === b.name
+                      ? "text-white"
+                      : "text-[#828fa3]"
+                  }`}
               >
                 {b.name}
               </p>
@@ -68,7 +91,11 @@ export default function BoardsDropDown({
       </div>
       <div
         className="flex pl-[2.4rem] gap-[1.2rem]
-      cursor-pointer py-[1.4rem] items-center"
+      cursor-pointer py-[1.4rem] items-center
+      mb-[1.6rem]"
+        onClick={() => {
+          setAddNewBoard(true);
+        }}
       >
         <svg
           className="text-[#635fc7]"
@@ -119,6 +146,7 @@ export default function BoardsDropDown({
           </svg>
         </div>
       </div>
+      {addNewBoard && <Form type={"addBoard"} setShowEdit={setAddNewBoard} />}
     </div>
   );
 }

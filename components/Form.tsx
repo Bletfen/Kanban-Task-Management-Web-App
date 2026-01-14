@@ -20,7 +20,7 @@ export default function Form({
 }: {
   type: string;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
-  boardName: string;
+  boardName?: string;
   columnName?: string;
   taskName?: string;
   setSelectedTask?: Dispatch<
@@ -62,6 +62,7 @@ export default function Form({
       subtasks: [],
     }
   );
+  const [newBoardTitle, setNewBoardTitle] = useState<string>("");
 
   const titleErrorHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.value.trim()) {
@@ -225,7 +226,7 @@ export default function Form({
         status: taskState.status,
         subtasks: taskState.subtasks.filter((sub) => sub.title.trim()),
       };
-      const res = await fetch(`/api/boards/${encodeURIComponent(boardName)}`, {
+      const res = await fetch(`/api/boards/${encodeURIComponent(!boardName)}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -236,6 +237,41 @@ export default function Form({
       router.refresh();
     } catch (error) {
       console.error("Error adding new task:", error);
+    }
+  };
+
+  const addNewBoard = async () => {
+    if (newBoardTitle.trim() === "") {
+      setErrorTitle(true);
+      return;
+    }
+    const emptyCols = columns
+      .map((col, idx) => (!col.name.trim() ? idx : -1))
+      .filter((i) => i !== -1);
+    if (emptyCols.length) {
+      setColumnErrors(emptyCols);
+      return;
+    }
+    setColumnErrors([]);
+    try {
+      const res = await fetch("/api/boards", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: newBoardTitle,
+          columns,
+        }),
+      });
+      if (!res.ok) {
+        throw new Error("Cannot create board");
+      }
+      setShowEdit(false);
+      router.push(`/boards/${encodeURIComponent(newBoardTitle)}`);
+      router.refresh();
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -292,7 +328,7 @@ export default function Form({
               onChange={(e) => {
                 if (type === "board") {
                   setBoardTitle(e.target.value);
-                } else {
+                } else if (type === "addTask" || type === "task") {
                   setTaskState?.((prev) => ({
                     ...prev!,
                     title: e.target.value,
@@ -301,6 +337,8 @@ export default function Form({
                     ...prev!,
                     title: e.target.value,
                   }));
+                } else {
+                  setNewBoardTitle(e.target.value);
                 }
                 titleErrorHandler(e);
               }}
@@ -317,38 +355,37 @@ export default function Form({
             )}
           </div>
         </div>
-        {type === "task" ||
-          (type === "addTask" && (
-            <div className="flex flex-col gap-[0.8rem]">
-              <label
-                className="text-[1.2rem] font-bold text-[#828fa3]"
-                htmlFor="Description"
-              >
-                Description
-              </label>
+        {(type === "task" || type === "addTask") && (
+          <div className="flex flex-col gap-[0.8rem]">
+            <label
+              className="text-[1.2rem] font-bold text-[#828fa3]"
+              htmlFor="Description"
+            >
+              Description
+            </label>
 
-              <textarea
-                className="pt-[0.9rem] pb-[5.7rem] px-[1.6rem] bg-white border
+            <textarea
+              className="pt-[0.9rem] pb-[5.7rem] px-[1.6rem] bg-white border
               border-[rgba(130,143,163,0.25)] rounded-[0.4rem]
               text-[1.3rem] font-[500] leading-[1.77]
               text-[#000112] resize-none outline-none"
-                name="Description"
-                placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
-                defaultValue={localTask?.description}
-                onChange={(e) => {
-                  setTaskState?.((prev) => ({
-                    ...prev!,
-                    description: e.target.value,
-                  }));
-                  setLocalTask?.((prev) => ({
-                    ...prev!,
-                    description: e.target.value,
-                  }));
-                }}
-                maxLength={350}
-              ></textarea>
-            </div>
-          ))}
+              name="Description"
+              placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
+              defaultValue={localTask?.description}
+              onChange={(e) => {
+                setTaskState?.((prev) => ({
+                  ...prev!,
+                  description: e.target.value,
+                }));
+                setLocalTask?.((prev) => ({
+                  ...prev!,
+                  description: e.target.value,
+                }));
+              }}
+              maxLength={350}
+            ></textarea>
+          </div>
+        )}
         {(type === "task" || type === "addTask") && (
           <AddSubTasks
             localTask={localTask || taskState}
@@ -412,9 +449,9 @@ export default function Form({
                       width="15"
                       height="15"
                       xmlns="http://www.w3.org/2000/svg"
-                      onClick={() =>
-                        setColumns((prev) => prev.filter((_, i) => i !== idx))
-                      }
+                      onClick={() => {
+                        setColumns((prev) => prev.filter((_, i) => i !== idx));
+                      }}
                     >
                       <g fill="#828FA3" fillRule="evenodd">
                         <path d="m12.728 0 2.122 2.122L2.122 14.85 0 12.728z" />
@@ -434,7 +471,9 @@ export default function Form({
                       w-full text-[1.3rem] font-bold leading-[1.77]
                       text-[#635fc7] cursor-pointer"
                   type="button"
-                  onClick={addColumns}
+                  onClick={() => {
+                    addColumns();
+                  }}
                 >
                   + Add New Column
                 </button>
@@ -449,6 +488,8 @@ export default function Form({
             onClick={() => {
               if (type === "addTask") {
                 addNewTask();
+              } else if (type === "addBoard") {
+                addNewBoard();
               } else {
                 editTaskHandler();
               }

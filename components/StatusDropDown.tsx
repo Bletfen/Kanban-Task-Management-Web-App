@@ -10,7 +10,7 @@ export default function StatusDropDown({
 }: {
   changeStatus?: (newStatus: string) => Promise<void>;
   statusChangeHandler?: (st: string) => void;
-  boardName: string;
+  boardName?: string;
   statusNames?: string[];
 }) {
   const [names, setNames] = useState<string[]>(statusNames || []);

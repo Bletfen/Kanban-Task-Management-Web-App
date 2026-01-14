@@ -13,3 +13,13 @@ export async function GET(res: Request) {
   }
   return NextResponse.json(boards, { status: 200 });
 }
+
+export async function POST(req: Request) {
+  const reqBody = await req.json();
+  const newBoard = reqBody;
+  data.boards.push(newBoard);
+  return NextResponse.json(
+    { message: "Board added successfully" },
+    { status: 201 }
+  );
+}
