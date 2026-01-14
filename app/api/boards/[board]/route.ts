@@ -16,16 +16,51 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: { board: string } }
+  { params }: { params: Promise<{ board: string }> }
 ) {
-  const boardName = params.board;
+  const { board } = await params;
   const body = await req.json();
+  const columnName = body?.status;
+  const boardData = data.boards.find((b) => b.name === board);
 
-  return NextResponse.json({
-    message: "New Task added",
-    boardName,
-    received: body,
+  if (!boardData) {
+    return NextResponse.json({ error: "Board not found" }, { status: 400 });
+  }
+  if (!columnName) {
+    return NextResponse.json(
+      { error: "Column name is required" },
+      { status: 400 }
+    );
+  }
+
+  const findColumn = boardData.columns.find((c) => c.name === columnName);
+  if (!findColumn) {
+    return NextResponse.json({ error: "Column not found" }, { status: 400 });
+  }
+  const newTask = {
+    title: body?.title,
+    description: body?.description,
+    status: columnName,
+    subtasks: body?.subtasks,
+  };
+  const newColumnData = boardData.columns.map((col) => {
+    if (col.name === columnName) {
+      col.tasks.push(newTask);
+    }
+    return col;
   });
+  const updatedBoards = data.boards.map((b) => {
+    if (b.name === board) {
+      return {
+        ...b,
+        columns: newColumnData,
+      };
+    }
+    return b;
+  });
+  data.boards = updatedBoards;
+
+  return NextResponse.json({ message: "Task added successfully" });
 }
 
 export async function PUT(

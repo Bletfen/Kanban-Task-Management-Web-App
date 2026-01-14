@@ -6,12 +6,14 @@ export default function StatusDropDown({
   changeStatus,
   statusChangeHandler,
   boardName,
+  statusNames,
 }: {
   changeStatus?: (newStatus: string) => Promise<void>;
   statusChangeHandler?: (st: string) => void;
   boardName: string;
+  statusNames?: string[];
 }) {
-  const [names, setNames] = useState<string[] | null>([]);
+  const [names, setNames] = useState<string[]>(statusNames || []);
   const columnsNames = async () => {
     try {
       const response = await fetch(`/api/boards/${boardName}`);
@@ -24,8 +26,12 @@ export default function StatusDropDown({
   };
 
   useEffect(() => {
-    columnsNames();
-  }, []);
+    if (!statusNames || statusNames.length === 0) {
+      columnsNames();
+    } else {
+      setNames(statusNames);
+    }
+  }, [statusNames]);
   return (
     <div
       className="absolute top-20 left-0
@@ -42,6 +48,7 @@ export default function StatusDropDown({
             changeStatus?.(n);
             statusChangeHandler?.(n);
           }}
+          className="cursor-pointer hover:text-[#635fc7]"
         >
           {n}
         </p>

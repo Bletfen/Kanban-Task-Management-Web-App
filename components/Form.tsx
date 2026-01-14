@@ -1,9 +1,9 @@
 "use client";
+// ტასკის დამატება მაქვს გასაკეთებელი
 import { useRouter } from "next/navigation";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import AddSubTasks from "./AddSubTasks";
 import StatusChange from "./StatusChange";
-import { ParamValue } from "next/dist/server/request/params";
 
 export default function Form({
   setShowEdit,
@@ -16,6 +16,7 @@ export default function Form({
   setLocalTask,
   onStatusChange,
   boards,
+  statusNames,
 }: {
   type: string;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
@@ -34,8 +35,9 @@ export default function Form({
   >;
   localTask?: ITask;
   setLocalTask?: Dispatch<SetStateAction<ITask>> | undefined;
-  onStatusChange: Dispatch<SetStateAction<string>> | undefined;
-  boards: TBoards | undefined;
+  onStatusChange?: Dispatch<SetStateAction<string>> | undefined;
+  boards?: TBoards | undefined;
+  statusNames?: string[];
 }) {
   const router = useRouter();
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
@@ -43,12 +45,23 @@ export default function Form({
   const [errorSubTasks, setErrorSubTasks] = useState<number[]>([]);
   const currentBoard = boards?.find((b) => b.name === boardName);
   const [boardTitle, setBoardTitle] = useState<string>(
-    currentBoard?.name || boardName
+    currentBoard?.name || boardName || ""
   );
   const [columns, setColumns] = useState<TColumns[]>(
     currentBoard?.columns || []
   );
   const [columnErrors, setColumnErrors] = useState<number[]>([]);
+  const defaultStatusNames =
+    statusNames || currentBoard?.columns.map((col) => col.name) || [];
+
+  const [taskState, setTaskState] = useState<ITask>(
+    localTask || {
+      title: "",
+      description: "",
+      status: defaultStatusNames[0] || "",
+      subtasks: [],
+    }
+  );
 
   const titleErrorHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.value.trim()) {
@@ -68,25 +81,46 @@ export default function Form({
     }
   };
 
-  const subTaskDeleteHandler = (title: string) => {
-    setLocalTask?.((prev) => ({
-      ...prev,
-      subtasks: prev.subtasks.filter((sub) => sub.title !== title),
-    }));
+  const subTaskDeleteHandler = (idx: number) => {
+    if (type === "addTask" && !localTask) {
+      setTaskState((prev) => ({
+        ...prev,
+        subtasks: prev.subtasks.filter((_, i) => i !== idx),
+      }));
+    } else {
+      setLocalTask?.((prev) => ({
+        ...prev,
+        subtasks: prev.subtasks.filter((_, i) => i !== idx),
+      }));
+    }
   };
 
   const statusChangeHandler = (st: string) => {
-    setLocalTask?.((prev) => ({
-      ...prev,
-      status: st,
-    }));
+    if (type === "addTask" && !localTask) {
+      setTaskState?.((prev) => ({
+        ...prev,
+        status: st,
+      }));
+    } else {
+      setLocalTask?.((prev) => ({
+        ...prev,
+        status: st,
+      }));
+    }
   };
 
   const addNewSubtTask = () => {
-    setLocalTask?.((prev) => ({
-      ...prev,
-      subtasks: [...prev!.subtasks, { title: "", isCompleted: false }],
-    }));
+    if (type === "addTask" && !localTask) {
+      setTaskState((prev) => ({
+        ...prev,
+        subtasks: [...prev.subtasks, { title: "", isCompleted: false }],
+      }));
+    } else {
+      setLocalTask?.((prev) => ({
+        ...prev,
+        subtasks: [...prev!.subtasks, { title: "", isCompleted: false }],
+      }));
+    }
   };
 
   const editTaskHandler = async () => {
@@ -131,7 +165,6 @@ export default function Form({
         if (localTask && setLocalTask) setLocalTask(localTask);
       }
     } else {
-      // board editing
       if (!boardTitle.trim()) {
         setErrorTitle(true);
         return;
@@ -146,7 +179,7 @@ export default function Form({
       setColumnErrors([]);
       try {
         const res = await fetch(
-          `/api/boards/${encodeURIComponent(boardName)}`,
+          `/api/boards/${encodeURIComponent(boardName || "")}`,
           {
             method: "PUT",
             headers: {
@@ -172,6 +205,40 @@ export default function Form({
   const addColumns = () => {
     setColumns((prev) => [...prev, { name: "", tasks: [] }]);
   };
+
+  const addNewTask = async () => {
+    if (!taskState.title.trim()) {
+      setErrorTitle(true);
+      return;
+    }
+    const emptySubTasks = taskState?.subtasks
+      .map((sub, index) => (!sub.title.trim() ? index : -1))
+      .filter((i) => i !== -1);
+    if (emptySubTasks && emptySubTasks.length > 0) {
+      setErrorSubTasks(emptySubTasks);
+      return;
+    }
+    try {
+      const taskToCreate = {
+        title: taskState.title,
+        description: taskState.description,
+        status: taskState.status,
+        subtasks: taskState.subtasks.filter((sub) => sub.title.trim()),
+      };
+      const res = await fetch(`/api/boards/${encodeURIComponent(boardName)}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(taskToCreate),
+      });
+      setShowEdit(false);
+      router.refresh();
+    } catch (error) {
+      console.error("Error adding new task:", error);
+    }
+  };
+
   return (
     <div
       className="fixed inset-0 bg-black/50 flex items-center 
@@ -188,14 +255,20 @@ export default function Form({
         onClick={(e) => e.stopPropagation()}
       >
         <h1 className="text-[1.8rem] font-bold text-[#000112]">
-          Edit {type === "board" ? "Board" : "Task"}
+          {type === "board" && "Edit board"}
+          {type === "task" && "Edit Task"}
+          {type === "addBoard" && "Add New Board"}
+          {type === "addTask" && "Add New Task"}
         </h1>
         <div className="flex flex-col gap-[0.8rem]">
           <label
             className="text-[1.2rem] font-bold text-[#828fa3]"
             htmlFor="Title"
           >
-            {type === "board" ? "Board Name" : "Title"}
+            {type === "board" && "Board Name"}
+            {type === "task" && "Title"}
+            {type === "addBoard" && "Board Name"}
+            {type === "addTask" && "Title"}
           </label>
           <div
             className="py-[0.9rem] px-[1.6rem] bg-white border
@@ -208,11 +281,22 @@ export default function Form({
               text-[#000112] outline-none"
               type="text"
               name="Title"
+              placeholder={
+                type === "addBoard"
+                  ? "e.g. Web Design"
+                  : type === "addTask"
+                  ? "e.g. Take coffee break"
+                  : ""
+              }
               defaultValue={type === "board" ? boardTitle : localTask?.title}
               onChange={(e) => {
                 if (type === "board") {
                   setBoardTitle(e.target.value);
                 } else {
+                  setTaskState?.((prev) => ({
+                    ...prev!,
+                    title: e.target.value,
+                  }));
                   setLocalTask?.((prev) => ({
                     ...prev!,
                     title: e.target.value,
@@ -233,52 +317,62 @@ export default function Form({
             )}
           </div>
         </div>
-        {type === "task" && (
-          <div className="flex flex-col gap-[0.8rem]">
-            <label
-              className="text-[1.2rem] font-bold text-[#828fa3]"
-              htmlFor="Description"
-            >
-              Description
-            </label>
+        {type === "task" ||
+          (type === "addTask" && (
+            <div className="flex flex-col gap-[0.8rem]">
+              <label
+                className="text-[1.2rem] font-bold text-[#828fa3]"
+                htmlFor="Description"
+              >
+                Description
+              </label>
 
-            <textarea
-              className="py-[0.9rem] px-[1.6rem] bg-white border
+              <textarea
+                className="pt-[0.9rem] pb-[5.7rem] px-[1.6rem] bg-white border
               border-[rgba(130,143,163,0.25)] rounded-[0.4rem]
               text-[1.3rem] font-[500] leading-[1.77]
               text-[#000112] resize-none outline-none"
-              name="Description"
-              defaultValue={localTask?.description}
-              onChange={(e) =>
-                setLocalTask?.((prev) => ({
-                  ...prev!,
-                  description: e.target.value,
-                }))
-              }
-              maxLength={350}
-            ></textarea>
-          </div>
-        )}
-        {type === "task" && (
+                name="Description"
+                placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
+                defaultValue={localTask?.description}
+                onChange={(e) => {
+                  setTaskState?.((prev) => ({
+                    ...prev!,
+                    description: e.target.value,
+                  }));
+                  setLocalTask?.((prev) => ({
+                    ...prev!,
+                    description: e.target.value,
+                  }));
+                }}
+                maxLength={350}
+              ></textarea>
+            </div>
+          ))}
+        {(type === "task" || type === "addTask") && (
           <AddSubTasks
-            localTask={localTask}
+            localTask={localTask || taskState}
             setLocalTask={setLocalTask}
+            setTaskState={setTaskState}
             subTaskErrorHandler={subTaskErrorHandler}
             subTaskDeleteHandler={subTaskDeleteHandler}
             errorSubTasks={errorSubTasks}
             addNewSubtTask={addNewSubtTask}
+            isFreshTask={type === "addTask" && !localTask}
           />
         )}
         <div className="flex flex-col gap-[0.8rem]">
-          {type === "task" && (
+          {(type === "task" || type === "addTask") && (
             <StatusChange
               setShowDropDown={setShowDropDown}
-              status={localTask?.status}
+              status={localTask?.status || taskState?.status}
               showDropDown={showDropDown}
               statusChangeHandler={statusChangeHandler}
+              boardName={boardName}
+              statusNames={defaultStatusNames}
             />
           )}
-          {type === "board" && (
+          {(type === "board" || type === "addBoard") && (
             <div className="flex flex-col gap-[0.8rem]">
               <p
                 className="text-[1.2rem] font-bold
@@ -353,10 +447,17 @@ export default function Form({
               text-[1.3rem] font-bold leading-[1.77] text-white
               cursor-pointer mt-[2.4rem]"
             onClick={() => {
-              editTaskHandler();
+              if (type === "addTask") {
+                addNewTask();
+              } else {
+                editTaskHandler();
+              }
             }}
           >
-            {type === "task" ? "Create Task" : "Save Changes"}
+            {type === "task" && "Save Changes"}
+            {type === "addTask" && "Create Task"}
+            {type === "board" && "Save Changes"}
+            {type === "addBoard" && "Create New Board"}
           </button>
         </div>
       </div>

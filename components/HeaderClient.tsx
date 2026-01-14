@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HeaderTitle from "./HeaderTitle";
 import ThreeDotMenu from "./ThreeDotMenu";
 import { useParams } from "next/navigation";
+import Form from "./Form";
 
 export default function HeaderClient({ boards }: { boards: TBoards }) {
   const [showBoards, setShowBoards] = useState<boolean>(false);
@@ -12,6 +13,22 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
     (Array.isArray(paramsBoardName) ? paramsBoardName[0] : paramsBoardName) ||
       ""
   );
+  const [showAddTaskForm, setShowAddTaskForm] = useState<boolean>(false);
+  const [statusNames, setStatusNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchStatusNames = async () => {
+      try {
+        const res = await fetch(`/api/boards/${decodedBoardName}`);
+        const data = await res.json();
+        const names = data.columns.map((col: TColumns) => col.name);
+        setStatusNames(names);
+      } catch (err) {
+        console.error("Error fetching status names:", err);
+      }
+    };
+    fetchStatusNames();
+  }, [decodedBoardName]);
   return (
     <div className="relative">
       {showBoards && (
@@ -34,6 +51,7 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
           <button
             className="py-[1rem] px-[1.8rem]
           bg-[#635fc7] rounded-[2.4rem] cursor-pointer"
+            onClick={() => setShowAddTaskForm(true)}
           >
             <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -49,6 +67,14 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
           />
         </div>
       </div>
+      {showAddTaskForm && (
+        <Form
+          type="addTask"
+          setShowEdit={setShowAddTaskForm}
+          boardName={decodedBoardName}
+          statusNames={statusNames}
+        />
+      )}
     </div>
   );
 }

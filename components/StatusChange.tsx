@@ -6,11 +6,15 @@ export default function StatusChange({
   status,
   showDropDown,
   statusChangeHandler,
+  boardName,
+  statusNames,
 }: {
   setShowDropDown: Dispatch<SetStateAction<boolean>>;
   status: string | undefined;
   showDropDown: boolean;
   statusChangeHandler: (st: string) => void;
+  boardName: string;
+  statusNames?: string[];
 }) {
   return (
     <div>
@@ -33,7 +37,11 @@ export default function StatusChange({
           <path stroke="#635FC7" strokeWidth="2" fill="none" d="m1 1 4 4 4-4" />
         </svg>
         {showDropDown && (
-          <StatusDropDown statusChangeHandler={statusChangeHandler} />
+          <StatusDropDown
+            statusChangeHandler={statusChangeHandler}
+            boardName={boardName}
+            statusNames={statusNames}
+          />
         )}
       </div>
     </div>
