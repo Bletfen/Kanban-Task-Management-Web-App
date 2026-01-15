@@ -65,10 +65,11 @@ export default function Form({
     localTask || {
       title: "",
       description: "",
-      status: defaultStatusNames[0] || "",
+      status: "",
       subtasks: [],
     }
   );
+  const [errorStatus, setErrorStatus] = useState<boolean>(false);
 
   useEffect(() => {
     setShowBoards?.(false);
@@ -118,6 +119,7 @@ export default function Form({
         status: st,
       }));
     }
+    setErrorStatus(false);
   };
 
   const addNewSubtTask = () => {
@@ -220,6 +222,10 @@ export default function Form({
   const addNewTask = async () => {
     if (!taskState.title.trim()) {
       setErrorTitle(true);
+      return;
+    }
+    if (!taskState.status) {
+      setErrorStatus(true);
       return;
     }
     const emptySubTasks = taskState?.subtasks
@@ -420,6 +426,7 @@ export default function Form({
               statusChangeHandler={statusChangeHandler}
               boardName={boardName}
               statusNames={defaultStatusNames}
+              errorStatus={errorStatus}
             />
           )}
           {(type === "board" || type === "addBoard") && (

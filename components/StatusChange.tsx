@@ -8,6 +8,7 @@ export default function StatusChange({
   statusChangeHandler,
   boardName,
   statusNames,
+  errorStatus,
 }: {
   setShowDropDown: Dispatch<SetStateAction<boolean>>;
   status: string | undefined;
@@ -15,6 +16,7 @@ export default function StatusChange({
   statusChangeHandler: (st: string) => void;
   boardName?: string;
   statusNames?: string[];
+  errorStatus: boolean;
 }) {
   return (
     <div>
@@ -31,8 +33,13 @@ export default function StatusChange({
           className="text-[1.3rem] font-[500] leading-[1.77]
                   text-[#000112]"
         >
-          {status}
+          {status || "Select Status"}
         </p>
+        {errorStatus && (
+          <span className="text-[1.2rem] text-[#ea5555] font-[500]">
+            Can't be empty
+          </span>
+        )}
         <svg width="10" height="7" xmlns="http://www.w3.org/2000/svg">
           <path stroke="#635FC7" strokeWidth="2" fill="none" d="m1 1 4 4 4-4" />
         </svg>

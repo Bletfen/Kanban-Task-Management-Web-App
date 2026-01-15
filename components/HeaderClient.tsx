@@ -18,18 +18,22 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
   const [showEditDelete, setShowEditDelete] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchStatusNames = async () => {
-      try {
-        const res = await fetch(`/api/boards/${decodedBoardName}`);
-        const data = await res.json();
-        const names = data.columns.map((col: TColumns) => col.name);
-        setStatusNames(names);
-      } catch (err) {
-        console.error("Error fetching status names:", err);
-      }
-    };
-    fetchStatusNames();
-  }, [decodedBoardName]);
+    if (showAddTaskForm && decodedBoardName) {
+      const fetchStatusNames = async () => {
+        try {
+          const res = await fetch(`/api/boards/${decodedBoardName}`, {
+            cache: "no-store",
+          });
+          const data = await res.json();
+          const names = data.columns.map((col: TColumns) => col.name);
+          setStatusNames(names);
+        } catch (err) {
+          console.error("Error fetching status names:", err);
+        }
+      };
+      fetchStatusNames();
+    }
+  }, [showAddTaskForm, decodedBoardName]);
   return (
     <div className="relative">
       {showBoards && (

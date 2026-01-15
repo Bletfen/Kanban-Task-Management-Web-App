@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 
 export default function StatusDropDown({
@@ -26,12 +25,13 @@ export default function StatusDropDown({
   };
 
   useEffect(() => {
-    if (!statusNames || statusNames.length === 0) {
-      columnsNames();
-    } else {
+    if (statusNames && statusNames.length > 0) {
       setNames(statusNames);
+    } else if (boardName) {
+      columnsNames();
     }
-  }, [statusNames]);
+  }, [statusNames, boardName]);
+
   return (
     <div
       className="absolute top-20 left-0

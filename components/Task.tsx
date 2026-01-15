@@ -27,6 +27,7 @@ export default function Task({
   const [localTask, setLocalTask] = useState(selectedTask);
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [currentColumn, setCurrentColumn] = useState<string>(columnName);
+  const [showEditDelete, setShowEditDelete] = useState<boolean>(false);
 
   const saveTask = async (subtaskIndex: number) => {
     const updateSubTasks = localTask.subtasks.map((sub, index) =>
@@ -126,6 +127,8 @@ export default function Task({
           localTask={localTask}
           setLocalTask={setLocalTask}
           onStatusChange={setCurrentColumn}
+          setShowEditDelete={setShowEditDelete}
+          showEditDelete={showEditDelete}
         />
       </div>
       <p
