@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BoardsDropDown from "./BoardsDropDown";
 import { ParamValue } from "next/dist/server/request/params";
 export default function HeaderTitle({
@@ -7,11 +7,15 @@ export default function HeaderTitle({
   showBoards,
   setShowBoards,
   paramsBoardName,
+  setShowEditDelete,
+  setShowAddTaskForm,
 }: {
   boards: TBoards;
   showBoards: boolean;
   setShowBoards: Dispatch<SetStateAction<boolean>>;
   paramsBoardName: ParamValue;
+  setShowEditDelete: Dispatch<SetStateAction<boolean>>;
+  setShowAddTaskForm: Dispatch<SetStateAction<boolean>>;
 }) {
   const handleDropDown = () => {
     if (!showBoards) {
@@ -22,7 +26,10 @@ export default function HeaderTitle({
   };
   return (
     <>
-      <div className="flex items-center gap-[1.6rem] relative z-50">
+      <div
+        className="flex items-center gap-[1.6rem] relative z-50"
+        onClick={() => setShowEditDelete(false)}
+      >
         <svg width="24" height="25" xmlns="http://www.w3.org/2000/svg">
           <g fill="#635FC7" fillRule="evenodd">
             <rect width="6" height="25" rx="2" />
@@ -33,7 +40,10 @@ export default function HeaderTitle({
         <div className="flex items-center gap-[0.8rem]">
           <h1
             className="text-[1.8rem] text-[#000112] font-bold"
-            onClick={handleDropDown}
+            onClick={() => {
+              handleDropDown();
+              setShowAddTaskForm(false);
+            }}
           >
             {paramsBoardName}
           </h1>

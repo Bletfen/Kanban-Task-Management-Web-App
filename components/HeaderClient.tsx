@@ -15,6 +15,7 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
   );
   const [showAddTaskForm, setShowAddTaskForm] = useState<boolean>(false);
   const [statusNames, setStatusNames] = useState<string[]>([]);
+  const [showEditDelete, setShowEditDelete] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchStatusNames = async () => {
@@ -46,12 +47,17 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
           showBoards={showBoards}
           setShowBoards={setShowBoards}
           paramsBoardName={decodedBoardName}
+          setShowEditDelete={setShowEditDelete}
+          setShowAddTaskForm={setShowAddTaskForm}
         />
         <div className="flex items-center gap-[1.6rem]">
           <button
             className="py-[1rem] px-[1.8rem]
           bg-[#635fc7] rounded-[2.4rem] cursor-pointer"
-            onClick={() => setShowAddTaskForm(true)}
+            onClick={() => {
+              setShowAddTaskForm(true);
+              setShowEditDelete(false);
+            }}
           >
             <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -64,6 +70,10 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
             type={"board"}
             boardName={decodedBoardName}
             boards={boards}
+            setShowEditDelete={setShowEditDelete}
+            showEditDelete={showEditDelete}
+            setShowBoards={setShowBoards}
+            setShowAddTaskForm={setShowAddTaskForm}
           />
         </div>
       </div>
@@ -73,6 +83,7 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
           setShowEdit={setShowAddTaskForm}
           boardName={decodedBoardName}
           statusNames={statusNames}
+          setShowBoards={setShowBoards}
         />
       )}
     </div>

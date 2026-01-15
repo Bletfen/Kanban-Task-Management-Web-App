@@ -14,6 +14,10 @@ export default function ThreeDotMenu({
   setLocalTask,
   onStatusChange,
   boards,
+  setShowBoards,
+  setShowAddTaskForm,
+  setShowEditDelete,
+  showEditDelete,
 }: {
   type: string;
   boardName: string;
@@ -33,22 +37,29 @@ export default function ThreeDotMenu({
   setLocalTask?: Dispatch<SetStateAction<ITask>>;
   onStatusChange?: Dispatch<SetStateAction<string>>;
   boards?: TBoards;
+  setShowBoards?: Dispatch<SetStateAction<boolean>>;
+  setShowAddTaskForm?: Dispatch<SetStateAction<boolean>>;
+  setShowEditDelete?: Dispatch<SetStateAction<boolean>>;
+  showEditDelete?: boolean;
 }) {
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);
-  const [showEditDelete, setShowEditDelete] = useState<boolean>(false);
 
   const handleMenu = () => {
     if (showEditDelete) {
-      setShowEditDelete(false);
+      setShowEditDelete?.(false);
     } else {
-      setShowEditDelete(true);
+      setShowEditDelete?.(true);
     }
   };
   return (
     <div className="cursor-pointer relative">
       <svg
-        onClick={handleMenu}
+        onClick={() => {
+          handleMenu();
+          setShowBoards?.(false);
+          setShowAddTaskForm?.(false);
+        }}
         width="5"
         height="20"
         xmlns="http://www.w3.org/2000/svg"

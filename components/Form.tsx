@@ -1,7 +1,12 @@
 "use client";
-// ტასკის დამატება მაქვს გასაკეთებელი
 import { useRouter } from "next/navigation";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import AddSubTasks from "./AddSubTasks";
 import StatusChange from "./StatusChange";
 
@@ -17,6 +22,7 @@ export default function Form({
   onStatusChange,
   boards,
   statusNames,
+  setShowBoards,
 }: {
   type: string;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
@@ -38,6 +44,7 @@ export default function Form({
   onStatusChange?: Dispatch<SetStateAction<string>> | undefined;
   boards?: TBoards | undefined;
   statusNames?: string[];
+  setShowBoards?: Dispatch<SetStateAction<boolean>>;
 }) {
   const router = useRouter();
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
@@ -62,6 +69,10 @@ export default function Form({
       subtasks: [],
     }
   );
+
+  useEffect(() => {
+    setShowBoards?.(false);
+  }, []);
 
   const titleErrorHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.value.trim()) {

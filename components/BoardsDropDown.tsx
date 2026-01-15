@@ -47,10 +47,9 @@ export default function BoardsDropDown({
         ALL BOARDS ({boards.length})
       </h1>
       <div className="pr-[2.4rem]">
-        {boards.map((b) => (
-          <div>
+        {boards.map((b, index) => (
+          <div key={Math.random() * index}>
             <div
-              key={b.name}
               className={`flex items-center gap-[1.2rem]
               cursor-pointer pl-[2.4rem]
               py-[1.4rem]
