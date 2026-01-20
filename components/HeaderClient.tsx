@@ -34,6 +34,7 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
       fetchStatusNames();
     }
   }, [showAddTaskForm, decodedBoardName]);
+
   return (
     <div className="relative">
       {showBoards && (
