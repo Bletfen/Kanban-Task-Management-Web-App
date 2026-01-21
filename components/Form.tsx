@@ -297,7 +297,7 @@ export default function Form({
   return (
     <div
       className="fixed inset-0 bg-black/50 flex items-center 
-      justify-center z-40"
+      justify-center z-50"
       onClick={() => {
         setShowEdit(false);
         setSelectedTask?.(null);

@@ -27,10 +27,16 @@ export default function HeaderTitle({
   return (
     <>
       <div
-        className="flex items-center gap-[1.6rem] relative z-50"
+        className="flex items-center gap-[1.6rem] relative
+        "
         onClick={() => setShowEditDelete(false)}
       >
-        <svg width="24" height="25" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="24"
+          height="25"
+          xmlns="http://www.w3.org/2000/svg"
+          className="flex md:!hidden"
+        >
           <g fill="#635FC7" fillRule="evenodd">
             <rect width="6" height="25" rx="2" />
             <rect opacity=".75" x="9" width="6" height="25" rx="2" />
@@ -39,8 +45,10 @@ export default function HeaderTitle({
         </svg>
         <div className="flex items-center gap-[0.8rem]">
           <h1
-            className="text-[1.8rem] text-[#000112] font-bold"
+            className="text-[1.8rem] text-[#000112] font-bold
+            md:text-[2rem]"
             onClick={() => {
+              if (window.innerWidth >= 768) return;
               handleDropDown();
               setShowAddTaskForm(false);
             }}
@@ -53,6 +61,7 @@ export default function HeaderTitle({
               height="7"
               xmlns="http://www.w3.org/2000/svg"
               onClick={handleDropDown}
+              className="block md:hidden"
             >
               <path
                 stroke="#635FC7"
@@ -67,6 +76,7 @@ export default function HeaderTitle({
               width="10"
               height="7"
               xmlns="http://www.w3.org/2000/svg"
+              className="block md:hidden"
             >
               <path
                 stroke="#635FC7"

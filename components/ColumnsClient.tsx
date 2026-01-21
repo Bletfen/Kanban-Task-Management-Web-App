@@ -53,7 +53,7 @@ export default function ColumnsClient({
       {isEmpty ? (
         <Empty setShowAddColumnForm={setShowAddColumnForm} />
       ) : (
-        <div className="embla py-[2.4rem] px-[1.6rem]">
+        <div className="embla py-[2.4rem] px-[1.6rem] h-screen">
           <div className="embla_viewport overflow-hidden" ref={emblaRef}>
             <div className="embla_container flex gap-[2.4rem]">
               {boardsData.columns.map((col: TColumns, index) => (
@@ -120,14 +120,16 @@ export default function ColumnsClient({
               ))}
               <div
                 className="min-h-screen flex items-center
-            justify-center px-[5.55rem]
-            bg-[linear-gradient(to_bottom,#e9effa,rgba(233,239,250,0.5))]
-            mt-[4rem] rounded-[0.6rem]"
+                  justify-center px-[5.55rem]
+                  bg-[linear-gradient(to_bottom,#e9effa,rgba(233,239,250,0.5))]
+                  mt-[4rem] rounded-[0.6rem]
+                  cursor-pointer w-[28rem]
+                  shrink-0"
                 onClick={() => setShowAddColumnForm(true)}
               >
                 <p
                   className="text-[2.4rem] font-bold
-            text-[#828fa3] shrink-0"
+                text-[#828fa3] shrink-0"
                 >
                   +New Column
                 </p>
@@ -137,7 +139,7 @@ export default function ColumnsClient({
           {selectedTask && (
             <div
               className="fixed inset-0 bg-black/50 z-50 p-[1.6rem]
-        flex items-center justify-center"
+              flex items-center justify-center"
               onClick={() => {
                 setSelectedTask(null);
               }}

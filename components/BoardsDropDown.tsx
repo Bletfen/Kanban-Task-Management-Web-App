@@ -6,9 +6,11 @@ import Form from "./Form";
 export default function BoardsDropDown({
   boards,
   setShowBoards,
+  type,
 }: {
   boards: TBoards;
-  setShowBoards: Dispatch<SetStateAction<boolean>>;
+  setShowBoards?: Dispatch<SetStateAction<boolean>>;
+  type?: string;
 }) {
   const router = useRouter();
   const params = useParams();
@@ -34,19 +36,21 @@ export default function BoardsDropDown({
 
   return (
     <div
-      className="absolute top-25 left-15 z-50 bg-white
-      py-[1.6rem] rounded-[0.8rem]
-      shadow-[0_10px_20px_rgba(54,78,126,0.25)]
-      w-[26.4rem]
-      "
+      className={`z-50 bg-white md:flex md:flex-col md:justify-between
+        md:min-h-screen
+      ${
+        type === "tablet"
+          ? "relative top-0 left-0 w-full shadow-none mt-[5.4rem]"
+          : "absolute top-25 left-15 w-[26.4rem] shadow-[0_10px_20px_rgba(54,78,126,0.25)] py-[1.6rem] rounded-[0.8rem]"
+      }`}
     >
-      <h1
-        className="text-[1.2rem] tracking-[0.24rem] text-[#828fa3]
-        font-bold pl-[2.4rem] mb-[1.9rem]"
-      >
-        ALL BOARDS ({boards.length})
-      </h1>
       <div className="pr-[2.4rem]">
+        <h1
+          className="text-[1.2rem] tracking-[0.24rem] text-[#828fa3]
+        font-bold pl-[2.4rem] mb-[1.9rem]"
+        >
+          ALL BOARDS ({boards.length})
+        </h1>
         {boards.map((b, index) => (
           <div key={Math.random() * index}>
             <div
@@ -72,7 +76,7 @@ export default function BoardsDropDown({
               </svg>
               <p
                 onClick={() => {
-                  setShowBoards(false);
+                  setShowBoards?.(false);
                   router.push(`/boards/${b.name}`);
                 }}
                 className={`text-[1.5rem] font-bold
@@ -87,32 +91,32 @@ export default function BoardsDropDown({
             </div>
           </div>
         ))}
-      </div>
-      <div
-        className="flex pl-[2.4rem] gap-[1.2rem]
-      cursor-pointer py-[1.4rem] items-center
-      mb-[1.6rem]"
-        onClick={() => {
-          setAddNewBoard(true);
-        }}
-      >
-        <svg
-          className="text-[#635fc7]"
-          width="16"
-          height="16"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          className="flex pl-[2.4rem] gap-[1.2rem]
+        cursor-pointer py-[1.4rem] items-center
+        mb-[1.6rem]"
+          onClick={() => {
+            setAddNewBoard(true);
+          }}
         >
-          <path
-            d="M0 2.889A2.889 2.889 0 0 1 2.889 0H13.11A2.889 2.889 0 0 1 16 2.889V13.11A2.888 2.888 0 0 1 13.111 16H2.89A2.889 2.889 0 0 1 0 13.111V2.89Zm1.333 5.555v4.667c0 .859.697 1.556 1.556 1.556h6.889V8.444H1.333Zm8.445-1.333V1.333h-6.89A1.556 1.556 0 0 0 1.334 2.89V7.11h8.445Zm4.889-1.333H11.11v4.444h3.556V5.778Zm0 5.778H11.11v3.11h2a1.556 1.556 0 0 0 1.556-1.555v-1.555Zm0-7.112V2.89a1.555 1.555 0 0 0-1.556-1.556h-2v3.111h3.556Z"
-            fill="currentColor"
-          />
-        </svg>
-        <p
-          className="text-[1.5rem] text-[#635fc7] font-bold
+          <svg
+            className="text-[#635fc7]"
+            width="16"
+            height="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 2.889A2.889 2.889 0 0 1 2.889 0H13.11A2.889 2.889 0 0 1 16 2.889V13.11A2.888 2.888 0 0 1 13.111 16H2.89A2.889 2.889 0 0 1 0 13.111V2.89Zm1.333 5.555v4.667c0 .859.697 1.556 1.556 1.556h6.889V8.444H1.333Zm8.445-1.333V1.333h-6.89A1.556 1.556 0 0 0 1.334 2.89V7.11h8.445Zm4.889-1.333H11.11v4.444h3.556V5.778Zm0 5.778H11.11v3.11h2a1.556 1.556 0 0 0 1.556-1.555v-1.555Zm0-7.112V2.89a1.555 1.555 0 0 0-1.556-1.556h-2v3.111h3.556Z"
+              fill="currentColor"
+            />
+          </svg>
+          <p
+            className="text-[1.5rem] text-[#635fc7] font-bold
         "
-        >
-          + Create New Board
-        </p>
+          >
+            + Create New Board
+          </p>
+        </div>
       </div>
       <div className="px-[2.4rem]">
         <div
