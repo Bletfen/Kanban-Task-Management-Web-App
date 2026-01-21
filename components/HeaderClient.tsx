@@ -47,7 +47,7 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
       <div
         className="flex items-center justify-between
       p-[1.6rem] relative z-50 bg-white
-      md:z-40
+      md:z-40 md:p-[0] border-b border-b-[#e4ebfa]
       "
       >
         <HeaderTitle
@@ -58,11 +58,15 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
           setShowEditDelete={setShowEditDelete}
           setShowAddTaskForm={setShowAddTaskForm}
         />
-        <div className="flex items-center gap-[1.6rem]">
+        <div
+          className="flex items-center gap-[1.6rem]
+        md:py-[1.6rem] md:pr-[2.4rem]"
+        >
           <button
             className="py-[1rem] px-[1.8rem]
             bg-[#635fc7] rounded-[2.4rem] cursor-pointer
-            md:flex md:py-[1.5rem] md:px-[2.4rem]"
+            md:flex md:py-[1.5rem] md:px-[2.4rem]
+            "
             onClick={() => {
               setShowAddTaskForm(true);
               setShowEditDelete(false);

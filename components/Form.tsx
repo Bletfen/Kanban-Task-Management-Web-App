@@ -306,7 +306,7 @@ export default function Form({
       <div
         className="bg-white p-[2.4rem] rounded-[0.6rem]
           flex flex-col gap-[2.4rem] max-w-[48rem] w-full
-          cursor-default"
+          cursor-default md:p-[3.2rem]"
         onClick={(e) => e.stopPropagation()}
       >
         <h1 className="text-[1.8rem] font-bold text-[#000112]">

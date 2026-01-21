@@ -28,11 +28,11 @@ export default function BoardsDropDown({
 
   return (
     <div
-      className={`z-50 bg-white
+      className={`bg-white
       ${
         type === "tablet"
-          ? "relative top-0 left-0 w-full shadow-none mt-[5.4rem] md:flex md:flex-col md:justify-between md:min-h-screen"
-          : "absolute top-25 left-15 w-[26.4rem] shadow-[0_10px_20px_rgba(54,78,126,0.25)] py-[1.6rem] rounded-[0.8rem] md:hidden"
+          ? "relative pt-[3.1rem] -top-22 left-0 w-full shadow-none mt-[5.4rem] md:flex md:flex-col md:justify-between md:min-h-screen"
+          : "z-50 absolute top-25 left-15 w-[26.4rem] shadow-[0_10px_20px_rgba(54,78,126,0.25)] py-[1.6rem] rounded-[0.8rem] md:hidden"
       }`}
     >
       <div className="pr-[2.4rem]">

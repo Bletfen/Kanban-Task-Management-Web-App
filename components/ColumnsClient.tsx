@@ -39,6 +39,8 @@ export default function ColumnsClient({
       });
       router.refresh();
       setShowAddColumnForm(false);
+      setColumns({ name: "", tasks: [] });
+      setColumnTitleError(false);
     } catch (err) {
       console.error(`cant be addded: ${err}`);
     }
@@ -124,7 +126,7 @@ export default function ColumnsClient({
                   bg-[linear-gradient(to_bottom,#e9effa,rgba(233,239,250,0.5))]
                   mt-[4rem] rounded-[0.6rem]
                   cursor-pointer w-[28rem]
-                  shrink-0"
+                  shrink-0 min-h-screen"
                 onClick={() => setShowAddColumnForm(true)}
               >
                 <p
@@ -156,7 +158,7 @@ export default function ColumnsClient({
       )}
       {showAddColumnForm && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 p-[1.6rem]
+          className="fixed inset-0 bg-black/50 z-50 p-[1.6rem]
           flex items-center justify-center"
           onClick={() => setShowAddColumnForm(false)}
         >
@@ -204,7 +206,7 @@ export default function ColumnsClient({
               }}
               className="bg-[#635fc7] rounded-[2rem] py-[0.8rem] w-full
               text-white font-bold text-[1.3rem] leading-[1.77]
-              mt-[2.4rem]"
+              mt-[2.4rem] cursor-pointer"
             >
               ADD NEW COLUMN
             </button>

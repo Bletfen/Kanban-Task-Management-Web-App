@@ -24,13 +24,14 @@ export default function RootLayout({
       <body className={`${Jakarta.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="min-h-screen md:flex">
-            <SideBarServer />
-
             <div className="flex-1 flex flex-col min-w-0">
               <Header />
-              <main className="bg-[#f4f7fd] flex-1 overflow-y-auto">
-                {children}
-              </main>
+              <div className="flex flex-1 overflow-hidden">
+                <SideBarServer />
+                <main className="flex-1 bg-[#f4f7fd] overflow-y-auto overflow-x-auto">
+                  {children}
+                </main>
+              </div>
             </div>
           </div>
         </ThemeProvider>
