@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import data from "@data/data.json";
-import { error } from "console";
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ board: string }> }
+  { params }: { params: Promise<{ board: string }> },
 ) {
   const { board } = await params;
   const body = await req.json();
@@ -23,6 +22,6 @@ export async function POST(
   data.boards = updatedBoard;
   return NextResponse.json(
     { message: "Task added successfully" },
-    { status: 200 }
+    { status: 200 },
   );
 }

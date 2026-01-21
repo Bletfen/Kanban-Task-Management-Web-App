@@ -1,8 +1,8 @@
 import HeaderClient from "./HeaderClient";
+import { getBoards } from "../app/lib/data-service";
 
 export default async function Header() {
-  const fetchBoards = await fetch("http://localhost:3000/api/boards");
-  const boards = await fetchBoards.json();
+  const boards = await getBoards();
 
   return (
     <div className="w-full shrink-0">
