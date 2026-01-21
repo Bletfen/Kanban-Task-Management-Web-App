@@ -60,12 +60,14 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
         />
         <div
           className="flex items-center gap-[1.6rem]
-        md:py-[1.6rem] md:pr-[2.4rem]"
+        md:py-[1.6rem] md:pr-[2.4rem]
+        xl:pt-[2rem] xl:pb-[2.8rem] xl:pr-[3.2rem]"
         >
           <button
             className="py-[1rem] px-[1.8rem]
             bg-[#635fc7] rounded-[2.4rem] cursor-pointer
             md:flex md:py-[1.5rem] md:px-[2.4rem]
+            hover:bg-[#a8a4ff] transtion-all duration-300
             "
             onClick={() => {
               setShowAddTaskForm(true);

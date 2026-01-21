@@ -15,7 +15,7 @@ export default function AddSubTasks({
   setTaskState?: Dispatch<SetStateAction<ITask>> | undefined;
   subTaskErrorHandler: (
     e: ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => void;
   subTaskDeleteHandler: (title: number) => void;
   errorSubTasks: number[];
@@ -29,9 +29,12 @@ export default function AddSubTasks({
         {localTask?.subtasks.map((sub, idx) => (
           <div className="flex items-center gap-[1.6rem]" key={idx}>
             <div
-              className="py-[0.8rem] px-[1.6rem]
-                border border-[rgba(130,143,163,0.25)]
-                w-full rounded-[0.4rem]"
+              className={`py-[0.8rem] px-[1.6rem]
+                border flex items-center
+                w-full rounded-[0.4rem]
+                focus-within:border-[#635fc7]
+                transition-all duration-300
+                ${errorSubTasks.includes(idx) ? "border-[#ea5555]" : "border-[rgba(130,143,163,0.25)]"}`}
             >
               <input
                 type="text"
@@ -46,7 +49,7 @@ export default function AddSubTasks({
                       const updated = {
                         ...prev,
                         subtasks: prev.subtasks.map((s, i) =>
-                          i === idx ? { ...s, title: e.target.value } : s
+                          i === idx ? { ...s, title: e.target.value } : s,
                         ),
                       };
                       return updated;
@@ -56,7 +59,7 @@ export default function AddSubTasks({
                       const updated = {
                         ...prev,
                         subtasks: prev.subtasks.map((s, i) =>
-                          i === idx ? { ...s, title: e.target.value } : s
+                          i === idx ? { ...s, title: e.target.value } : s,
                         ),
                       };
                       return updated;
@@ -65,31 +68,37 @@ export default function AddSubTasks({
                   subTaskErrorHandler(e, idx);
                 }}
               />
+              {errorSubTasks.includes(idx) && (
+                <span
+                  className="text-[1.2rem] text-[#ea5555] font-[500]
+                shrink-0"
+                >
+                  Can't be empty
+                </span>
+              )}
             </div>
             <svg
-              className="shrink-0 cursor-pointer"
+              className="shrink-0 cursor-pointer text-[#828fa3] hover:text-[#ea5555]
+              transition-all duration-300"
               width="15"
               height="15"
               xmlns="http://www.w3.org/2000/svg"
               onClick={() => subTaskDeleteHandler(idx)}
             >
-              <g fill="#828FA3" fillRule="evenodd">
+              <g fill="currentColor" fillRule="evenodd">
                 <path d="m12.728 0 2.122 2.122L2.122 14.85 0 12.728z" />
                 <path d="M0 2.122 2.122 0 14.85 12.728l-2.122 2.122z" />
               </g>
             </svg>
-            {errorSubTasks.includes(idx) && (
-              <span className="text-[1.2rem] text-[#ea5555] font-[500]">
-                Can't be empty
-              </span>
-            )}
           </div>
         ))}
         <button
           className="py-[0.9rem] flex items-center
               justify-center bg-[rgba(99,95,199,0.1)] rounded-[2rem]
               w-full text-[1.3rem] font-bold leading-[1.77]
-              text-[#635fc7] cursor-pointer"
+              text-[#635fc7] cursor-pointer
+              transition-all duration-300
+              hover:bg-[rgba(99,95,199,0.25)]"
           type="button"
           onClick={addNewSubtTask}
         >

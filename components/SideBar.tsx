@@ -11,7 +11,7 @@ export default function SideBar({ boards }: { boards: TBoards }) {
       <aside
         className={`hidden md:block gap-[2rem] shrink-0
             min-h-screen bg-white border-r border-r-[#e4ebfa]
-            transition-all duration-300 ease-in-out
+            transition-all duration-300 ease-in-out pr-[2.4rem]
         ${isOpen ? "w-[260px]" : "w-[0]"}`}
       >
         {isOpen && (
@@ -26,7 +26,10 @@ export default function SideBar({ boards }: { boards: TBoards }) {
                 className="py-[1.6rem] px-[2.4rem]
               text-[#828fa3] text-[1.5rem] font-bold
               flex items-center gap-[1rem]
-              mt-[1.6rem] cursor-pointer"
+              mt-[1.6rem] cursor-pointer
+              transition-all duration-300
+              hover:bg-[#635fc7]/10 hover:text-[#635fc7]
+              rounded-r-full"
                 onClick={() => setIsOpen(false)}
               >
                 <svg width="18" height="16" xmlns="http://www.w3.org/2000/svg">
@@ -46,7 +49,8 @@ export default function SideBar({ boards }: { boards: TBoards }) {
           className="py-[1.9rem] pl-[1.8rem] pr-[2.2rem]
           bg-[#635fc7] h-[4.8rem] rounded-r-full absolute
           top-[100%] left-0 curosor-pointer
-          hidden md:flex cursor-pointer z-50"
+          hidden md:flex cursor-pointer z-50
+          hover:bg-[#a8a4ff] transtion-all duration-300"
           onClick={() => setIsOpen(true)}
         >
           <svg width="16" height="11" xmlns="http://www.w3.org/2000/svg">

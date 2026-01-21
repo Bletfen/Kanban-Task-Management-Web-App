@@ -326,9 +326,12 @@ export default function Form({
             {type === "addTask" && "Title"}
           </label>
           <div
-            className="py-[0.9rem] px-[1.6rem] bg-white border
-              border-[rgba(130,143,163,0.25)] rounded-[0.4rem]
-              flex items-center justify-between"
+            className={`py-[0.9rem] px-[1.6rem] bg-white border
+              rounded-[0.4rem]
+              flex items-center justify-between
+              ${errorTitle ? "border-[#ea5555]" : "border-[rgba(130,143,163,0.25)]"}
+              focus-within:border-[#635fc7]
+              transition-all duration-300`}
           >
             <input
               className="w-full
@@ -387,7 +390,9 @@ export default function Form({
               className="pt-[0.9rem] pb-[5.7rem] px-[1.6rem] bg-white border
               border-[rgba(130,143,163,0.25)] rounded-[0.4rem]
               text-[1.3rem] font-[500] leading-[1.77]
-              text-[#000112] resize-none outline-none"
+              text-[#000112] resize-none outline-none
+              focus-within:border-[#635fc7]
+              transition-all duration-300"
               name="Description"
               placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
               defaultValue={localTask?.description}
@@ -504,7 +509,9 @@ export default function Form({
             className="py-[0.9rem] flex items-center
               justify-center bg-[#635fc7] rounded-[2rem] w-full
               text-[1.3rem] font-bold leading-[1.77] text-white
-              cursor-pointer mt-[2.4rem]"
+              cursor-pointer mt-[2.4rem]
+              transition-all duration-300
+              hover:bg-[#a8a4ff]"
             onClick={() => {
               if (type === "addTask") {
                 addNewTask();

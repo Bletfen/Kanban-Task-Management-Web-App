@@ -32,13 +32,13 @@ export default function DeletePopUp({
     try {
       const res = await fetch(
         `/api/boards/${encodeURIComponent(
-          boardName
+          boardName,
         )}/columns/${encodeURIComponent(columnName)}/tasks/${encodeURIComponent(
-          taskName
+          taskName,
         )}`,
         {
           method: "DELETE",
-        }
+        },
       );
       router.refresh();
       setSelectedTask?.(null);
@@ -90,7 +90,9 @@ export default function DeletePopUp({
           rounded-[2rem] bg-[#ea5555]
           text-[1.3rem] leading-[1.77]
           font-bold text-white
-          cursor-pointer"
+          cursor-pointer
+          transition-all duration-300
+          hover:bg-[#ff9898]"
             onClick={type === "board" ? deleteBoard : deleteTask}
           >
             Delete
@@ -100,7 +102,9 @@ export default function DeletePopUp({
           rounded-[2rem] bg-[rgba(99,95,199,0.1)]
           text-[1.3rem] leading-[1.77]
           font-bold text-[#635fc7]
-          cursor-pointer"
+          cursor-pointer
+          transition-all duration-300
+          hover:bg-[rgba(99,95,199,0.25)]"
           >
             Cancel
           </button>

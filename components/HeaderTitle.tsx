@@ -50,7 +50,7 @@ export default function HeaderTitle({
         </div>
         <div
           className="hidden md:block w-px bg-[#e4ebfa]
-          h-[8.5rem] mr-[2rem]"
+          h-[8.5rem] xl:h-[10.1rem] mr-[2rem]"
         />
         <svg
           width="24"

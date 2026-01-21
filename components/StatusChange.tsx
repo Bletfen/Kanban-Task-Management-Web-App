@@ -22,11 +22,12 @@ export default function StatusChange({
     <div>
       <p className="text-[1.2rem] font-bold text-[#828fa3]">Status</p>
       <div
-        className="py-[0.9rem] px-[1.6rem] bg-white
-            border border-[rgba(130,143,163,0.25)]
+        className={`py-[0.9rem] px-[1.6rem] bg-white
+            border transition-all duration-300
             bg-white flex items-center justify-between
             rounded-[0.4rem] relative
-            cursor-pointer"
+            cursor-pointer
+            ${showDropDown ? "border-[#635fc7]" : "border-[rgba(130,143,163,0.25)]"}`}
         onClick={() => setShowDropDown((prev) => !prev)}
       >
         <p

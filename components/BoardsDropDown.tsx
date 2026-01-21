@@ -35,7 +35,7 @@ export default function BoardsDropDown({
           : "z-50 absolute top-25 left-15 w-[26.4rem] shadow-[0_10px_20px_rgba(54,78,126,0.25)] py-[1.6rem] rounded-[0.8rem] md:hidden"
       }`}
     >
-      <div className="pr-[2.4rem]">
+      <div className="pr-[2.4rem] md:pr-[0]">
         <h1
           className="text-[1.2rem] tracking-[0.24rem] text-[#828fa3]
         font-bold pl-[2.4rem] mb-[1.9rem]"
@@ -47,7 +47,8 @@ export default function BoardsDropDown({
             <div
               className={`flex items-center gap-[1.2rem]
               cursor-pointer pl-[2.4rem]
-              py-[1.4rem]
+              py-[1.4rem] hover:bg-[#635fc7]/10 rounded-r-full
+              group transition-all duration-300
               ${
                 decodedBoardName === b.name ? "bg-[#635fc7] rounded-r-full" : ""
               }`}
@@ -71,9 +72,11 @@ export default function BoardsDropDown({
                   router.push(`/boards/${b.name}`);
                 }}
                 className={`text-[1.5rem] font-bold
+                  group-hover:text-[#635fc7]
+                  transition-all duration-300
                   ${
                     decodedBoardName === b.name
-                      ? "text-white"
+                      ? "text-white "
                       : "text-[#828fa3]"
                   }`}
               >
@@ -113,7 +116,7 @@ export default function BoardsDropDown({
           </p>
         </div>
       </div>
-      <div className="px-[2.4rem]">
+      <div className="px-[2.4rem] md:px-[0] md:pl-[2.4rem]">
         <div
           className="flex items-center bg-[#f4f7fd]
         justify-center py-[1.4rem] rounded-[0.6rem]
@@ -128,7 +131,8 @@ export default function BoardsDropDown({
           <div
             className="w-[4rem] h-[2rem] rounded-[1.2rem] bg-[#636fc7]
             flex p-[0.3rem] transition-all duration-300 justify-start
-            cursor-pointer dark:justify-end"
+            cursor-pointer dark:justify-end
+            hover:bg-[#a8a4ff] transtion-all duration-300"
             onClick={() => setTheme(isDark ? "light" : "dark")}
           >
             <div

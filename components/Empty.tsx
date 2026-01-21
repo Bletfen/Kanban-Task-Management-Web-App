@@ -20,7 +20,8 @@ export default function Empty({
         className="text-[1.5rem] font-bold
         text-white py-[1.5rem] px-[1.8rem]
         bg-[#635fc7] rounded-[2.4rem]
-        cursor-pointer"
+        cursor-pointer hover:bg-[#a8a4ff]
+        transition-all duration-300"
         onClick={() => setShowAddColumnForm(true)}
       >
         + Add New Column

@@ -62,6 +62,7 @@ export default function ColumnsClient({
                 <div
                   key={index}
                   className="embla_slide flex-[0_0_28rem]
+                  
             "
                 >
                   <div
@@ -70,16 +71,16 @@ export default function ColumnsClient({
                   >
                     <div
                       className={`w-[1.5rem] h-[1.5rem] rounded-full ${
-                        col.name === "Todo"
+                        index === 0
                           ? "bg-[#49c4e5]"
-                          : col.name === "Doing"
+                          : index === 1
                             ? "bg-[#8471f2]"
                             : "bg-[#67e2ae]"
                       }`}
                     ></div>
                     <p
                       className="text-[1.2rem] tracking-[0.24] text-[#828fa3]
-                font-bold"
+                      font-bold"
                     >
                       {col.name} <span>({col.tasks.length})</span>
                     </p>
@@ -92,12 +93,16 @@ export default function ColumnsClient({
                         className="px-[1.6rem] py-[2.3rem]
                           bg-white shadow-[0_0.4rem_0.6rem_0_rgba(54,78,126,0.1)]
                           rounded-[0.8rem] flex flex-col gap-[0.8rem]
-                          cursor-pointer"
+                          cursor-pointer group"
                         onClick={() => {
                           setSelectedTask({ task, columnName: col.name });
                         }}
                       >
-                        <h1 className="text-[1.5rem] text-[#00112] font-bold">
+                        <h1
+                          className="text-[1.5rem] text-[#00112]
+                        font-bold group-hover:text-[#635fc7]
+                        transition-all duration-300"
+                        >
                           {task.title}
                         </h1>
                         <p
@@ -126,12 +131,15 @@ export default function ColumnsClient({
                   bg-[linear-gradient(to_bottom,#e9effa,rgba(233,239,250,0.5))]
                   mt-[4rem] rounded-[0.6rem]
                   cursor-pointer w-[28rem]
-                  shrink-0 min-h-screen"
+                  shrink-0 min-h-screen
+                  group
+                  "
                 onClick={() => setShowAddColumnForm(true)}
               >
                 <p
                   className="text-[2.4rem] font-bold
-                text-[#828fa3] shrink-0"
+                text-[#828fa3] shrink-0
+                group-hover:text-[#635fc7] transtion-all duration-300"
                 >
                   +New Column
                 </p>
