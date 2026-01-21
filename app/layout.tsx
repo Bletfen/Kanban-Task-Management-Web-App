@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import Header from "../components/Header";
 import SideBar from "@/components/SideBar";
@@ -19,20 +20,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${Jakarta.className} antialiased`}>
-        <div className="min-h-screen md:flex overflow-x-hidden">
-          <aside className="hidden md:block w-[260px] shrink-0">
-            <SideBar />
-          </aside>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="min-h-screen md:flex overflow-x-hidden">
+            <aside className="hidden md:block w-[260px] shrink-0">
+              <SideBar />
+            </aside>
 
-          <div className="flex-1 flex flex-col min-w-0">
-            <Header />
-            <main className="bg-[#f4f7fd] flex-1 overflow-y-auto">
-              {children}
-            </main>
+            <div className="flex-1 flex flex-col min-w-0">
+              <Header />
+              <main className="bg-[#f4f7fd] flex-1 overflow-y-auto">
+                {children}
+              </main>
+            </div>
           </div>
-        </div>
+        </ThemeProvider>
       </body>
     </html>
   );

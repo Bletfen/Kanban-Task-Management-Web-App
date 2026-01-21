@@ -2,6 +2,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Form from "./Form";
+import { useTheme } from "next-themes";
 
 export default function BoardsDropDown({
   boards,
@@ -17,22 +18,11 @@ export default function BoardsDropDown({
   const paramsBoardName = params.board;
   const decodedBoardName = decodeURIComponent(
     (Array.isArray(paramsBoardName) ? paramsBoardName[0] : paramsBoardName) ||
-      ""
+      "",
   );
-  const [isDark, setIsDark] = useState<boolean>(
-    localStorage.getItem("theme") === "dark" ? true : false
-  );
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === "dark";
   const [addNewBoard, setAddNewBoard] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.removeItem("theme");
-    }
-  }, [isDark]);
 
   return (
     <div
@@ -134,7 +124,7 @@ export default function BoardsDropDown({
             className="w-[4rem] h-[2rem] rounded-[1.2rem] bg-[#636fc7]
             flex p-[0.3rem] transition-all duration-300 justify-start
             cursor-pointer dark:justify-end"
-            onClick={() => setIsDark((prev) => !prev)}
+            onClick={() => setTheme(isDark ? "light" : "dark")}
           >
             <div
               className="w-[1.4rem] h-[1.4rem] bg-[#fff]
