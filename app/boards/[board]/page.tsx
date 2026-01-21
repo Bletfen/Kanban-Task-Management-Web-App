@@ -1,4 +1,5 @@
 import ColumnsClient from "@/components/ColumnsClient";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function BoardPage({
@@ -8,14 +9,18 @@ export default async function BoardPage({
 }) {
   const { board } = await params;
   const boardName = decodeURIComponent(board);
+  const headersList = await headers();
+  const host = headersList.get("host");
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const baseUrl = `${protocol}://${host}`;
+
   const fetchBoards = await fetch(
-    `http://localhost:3000/api/boards/${boardName}`,
-    {
-      cache: "no-cache",
-    }
+    `${baseUrl}/api/boards/${encodeURIComponent(boardName)}`,
+    { cache: "no-store" },
   );
-  const fetchAllBoards = await fetch(`http://localhost:3000/api/boards`, {
-    cache: "no-cache",
+
+  const fetchAllBoards = await fetch(`${baseUrl}/api/boards`, {
+    cache: "no-store",
   });
   const fetchedAllBoardsData = await fetchAllBoards.json();
   const boardsData = await fetchBoards.json();
