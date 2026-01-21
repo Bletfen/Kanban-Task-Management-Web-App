@@ -55,7 +55,10 @@ export default function ColumnsClient({
       {isEmpty ? (
         <Empty setShowAddColumnForm={setShowAddColumnForm} />
       ) : (
-        <div className="embla py-[2.4rem] px-[1.6rem] h-screen">
+        <div
+          className="embla py-[2.4rem] px-[1.6rem] h-screen
+        dark:bg-[#20212c] transition-all duration-300"
+        >
           <div className="embla_viewport overflow-hidden" ref={emblaRef}>
             <div className="embla_container flex gap-[2.4rem]">
               {boardsData.columns.map((col: TColumns, index) => (
@@ -93,7 +96,8 @@ export default function ColumnsClient({
                         className="px-[1.6rem] py-[2.3rem]
                           bg-white shadow-[0_0.4rem_0.6rem_0_rgba(54,78,126,0.1)]
                           rounded-[0.8rem] flex flex-col gap-[0.8rem]
-                          cursor-pointer group"
+                          cursor-pointer group
+                          dark:bg-[#2b2c37] transition-all duration-300"
                         onClick={() => {
                           setSelectedTask({ task, columnName: col.name });
                         }}
@@ -131,8 +135,8 @@ export default function ColumnsClient({
                   bg-[linear-gradient(to_bottom,#e9effa,rgba(233,239,250,0.5))]
                   mt-[4rem] rounded-[0.6rem]
                   cursor-pointer w-[28rem]
-                  shrink-0 min-h-screen
-                  group
+                  shrink-0 min-h-screen transition-all duration-600
+                  group dark:bg-[linear-gradient(to_bottom,#2b2c37,rgba(43,44,55,0.5))]
                   "
                 onClick={() => setShowAddColumnForm(true)}
               >
@@ -174,12 +178,15 @@ export default function ColumnsClient({
             onClick={(e) => e.stopPropagation()}
             className="bg-white
            py-[2.4rem] px-[2.4rem]
-           rounded-[0.6rem]
+           rounded-[0.6rem] dark:bg-[#2b2c37]
+           transition-all duration-300
            "
           >
             <p
               className="text-[1.2rem] font-bold
-                text-[#828fa3] mb-[0.8rem]"
+                text-[#828fa3] mb-[0.8rem]
+                dark:text-white
+                transitiona-all duration-300"
             >
               Title
             </p>
@@ -214,7 +221,9 @@ export default function ColumnsClient({
               }}
               className="bg-[#635fc7] rounded-[2rem] py-[0.8rem] w-full
               text-white font-bold text-[1.3rem] leading-[1.77]
-              mt-[2.4rem] cursor-pointer"
+              mt-[2.4rem] cursor-pointer
+              transition-all duration-300
+              hover:bg-[#a8a4ff]"
             >
               ADD NEW COLUMN
             </button>

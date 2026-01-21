@@ -61,15 +61,20 @@ export default function DeletePopUp({
   return (
     <div
       className="fixed inset-0 bg-black/50 flex items-center 
-      justify-center z-50"
-      onClick={() => setShowDelete(false)}
+      justify-center z-50 cursor-default"
+      onClick={(e) => {
+        setShowDelete(false);
+      }}
     >
       <div
         className="bg-white p-[2.4rem]
         w-[34.3rem] md:w-[48rem]
         flex flex-col gap-[2.4rem]
         rounded-[0.6rem]
-        md:pt-[3.2rem] px-[3.2rem] pb-[4rem]"
+        md:pt-[3.2rem] px-[3.2rem] pb-[4rem]
+        transition-all duration-300
+        dark:bg-[#2b2c37]"
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col gap-[2.4rem]">
           <h1 className="text-[1.8rem] font-bold text-[#ea5555]">
@@ -92,7 +97,8 @@ export default function DeletePopUp({
           font-bold text-white
           cursor-pointer
           transition-all duration-300
-          hover:bg-[#ff9898]"
+          hover:bg-[#ff9898]
+          "
             onClick={type === "board" ? deleteBoard : deleteTask}
           >
             Delete
@@ -104,7 +110,8 @@ export default function DeletePopUp({
           font-bold text-[#635fc7]
           cursor-pointer
           transition-all duration-300
-          hover:bg-[rgba(99,95,199,0.25)]"
+          hover:bg-[rgba(99,95,199,0.25)]
+          dark:bg-white"
           >
             Cancel
           </button>

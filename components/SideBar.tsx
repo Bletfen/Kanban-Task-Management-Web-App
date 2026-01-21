@@ -12,6 +12,7 @@ export default function SideBar({ boards }: { boards: TBoards }) {
         className={`hidden md:block gap-[2rem] shrink-0
             min-h-screen bg-white border-r border-r-[#e4ebfa]
             transition-all duration-300 ease-in-out pr-[2.4rem]
+            dark:bg-[#2b2c37] dark:border-r-[#3e3f4e]
         ${isOpen ? "w-[260px]" : "w-[0]"}`}
       >
         {isOpen && (

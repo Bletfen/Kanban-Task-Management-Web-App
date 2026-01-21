@@ -31,7 +31,7 @@ export default function Task({
 
   const saveTask = async (subtaskIndex: number) => {
     const updateSubTasks = localTask.subtasks.map((sub, index) =>
-      index === subtaskIndex ? { ...sub, isCompleted: !sub.isCompleted } : sub
+      index === subtaskIndex ? { ...sub, isCompleted: !sub.isCompleted } : sub,
     );
 
     const updatedTask = {
@@ -44,9 +44,9 @@ export default function Task({
     try {
       const response = await fetch(
         `/api/boards/${encodeURIComponent(
-          boardName
+          boardName,
         )}/columns/${encodeURIComponent(
-          currentColumn
+          currentColumn,
         )}/tasks/${encodeURIComponent(selectedTask.title)}`,
         {
           method: "PUT",
@@ -56,7 +56,7 @@ export default function Task({
           body: JSON.stringify({
             subtasks: updateSubTasks,
           }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -80,9 +80,9 @@ export default function Task({
     try {
       const response = await fetch(
         `/api/boards/${encodeURIComponent(
-          boardName
+          boardName,
         )}/columns/${encodeURIComponent(
-          currentColumn
+          currentColumn,
         )}/tasks/${encodeURIComponent(selectedTask.title)}`,
         {
           method: "PUT",
@@ -90,7 +90,7 @@ export default function Task({
             "Content-Type": "application/json",
           },
           body: JSON.stringify(updatedTask),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -111,11 +111,17 @@ export default function Task({
         px-[2.4rem] bg-white rounded-[0.6rem]
         z-50 flex flex-col gap-[2.4rem]
         w-full min-w-[34rem] max-w-[48rem]
+        transition-all duration-300
+        dark:bg-[#2b2c37]
         "
       onClick={(e) => e.stopPropagation()}
     >
       <div className="flex items-center justify-between">
-        <h1 className="text-[1.8rem] font-bold text-[#000112]">
+        <h1
+          className="text-[1.8rem] font-bold text-[#000112]
+          transition-all duration-300
+          dark:text-white"
+        >
           {localTask?.title}
         </h1>
         <ThreeDotMenu
@@ -141,7 +147,7 @@ export default function Task({
       <div className="flex flex-col gap-[0.8rem]">
         <p
           className="text-[1.2rem] font-bold text-[#828fa3]
-        font-bold"
+          font-bold dark:text-white transition-all duration-300"
         >
           Subtasks (
           {localTask?.subtasks.filter((sub) => sub.isCompleted).length} of{" "}
@@ -156,6 +162,7 @@ export default function Task({
             bg-[#f3f7fd] rounded-[0.4rem]
             hover:bg-[#635fc7]/25 cursor-pointer
             transition-all duration-300
+            dark:bg-[#20212c]
             "
             onClick={() => saveTask(index)}
           >
@@ -204,7 +211,7 @@ export default function Task({
       <div>
         <p
           className="text-[1.2rem] font-bold text-[#828fa3]
-        font-bold"
+        font-bold dark:text-white mb-[0.8rem] transition-all duration-300"
         >
           Current Status
         </p>
@@ -221,7 +228,8 @@ export default function Task({
         >
           <span
             className="text-[1.3rem] font-[500] 
-          leading-[1.77] text-[#000112]"
+          leading-[1.77] text-[#000112]
+          transition-all duration-300 dark:text-white"
           >
             {localTask?.status}
           </span>

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 export default function AddSubTasks({
   localTask,
@@ -24,7 +24,13 @@ export default function AddSubTasks({
 }) {
   return (
     <div className="flex flex-col gap-[0.8rem]">
-      <p className="text-[1.2rem] font-bold text-[#828fa3]">Subtasks</p>
+      <p
+        className="text-[1.2rem] font-bold text-[#828fa3]
+          transition-all duration-300
+          dark:text-white"
+      >
+        Subtasks
+      </p>
       <div className="flex flex-col gap-[1.2rem]">
         {localTask?.subtasks.map((sub, idx) => (
           <div className="flex items-center gap-[1.6rem]" key={idx}>
@@ -41,7 +47,7 @@ export default function AddSubTasks({
                 value={sub.title}
                 className="text-[1.3rem]
                 font-[500] leading-[1.77] text-[#000112]
-                outline-none w-full"
+                outline-none w-full dark:bg-[#2b2c37] dark:text-white"
                 placeholder="e.g. Do something"
                 onChange={(e) => {
                   if (isFreshTask) {
@@ -98,7 +104,8 @@ export default function AddSubTasks({
               w-full text-[1.3rem] font-bold leading-[1.77]
               text-[#635fc7] cursor-pointer
               transition-all duration-300
-              hover:bg-[rgba(99,95,199,0.25)]"
+              hover:bg-[rgba(99,95,199,0.25)]
+              dark:bg-white"
           type="button"
           onClick={addNewSubtTask}
         >

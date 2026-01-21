@@ -48,6 +48,8 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
         className="flex items-center justify-between
       p-[1.6rem] relative z-50 bg-white
       md:z-40 md:p-[0] border-b border-b-[#e4ebfa]
+      transition-all duration-300
+      dark:bg-[#2b2c37] dark:border-b-[#3e3f4e]
       "
       >
         <HeaderTitle

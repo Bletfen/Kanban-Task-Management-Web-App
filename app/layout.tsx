@@ -28,7 +28,10 @@ export default function RootLayout({
               <Header />
               <div className="flex flex-1 overflow-hidden">
                 <SideBarServer />
-                <main className="flex-1 bg-[#f4f7fd] overflow-y-auto overflow-x-auto">
+                <main
+                  className="flex-1 bg-[#f4f7fd] overflow-y-auto overflow-x-auto
+                  dark:bg-[#20212c] transition-all duration-300"
+                >
                   {children}
                 </main>
               </div>

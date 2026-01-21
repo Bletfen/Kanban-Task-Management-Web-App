@@ -28,7 +28,7 @@ export default function BoardsDropDown({
 
   return (
     <div
-      className={`bg-white
+      className={`bg-white dark:bg-[#2b2c37] transition-all duration-300
       ${
         type === "tablet"
           ? "relative pt-[3.1rem] -top-22 left-0 w-full shadow-none mt-[5.4rem] md:flex md:flex-col md:justify-between md:min-h-screen"
@@ -47,15 +47,19 @@ export default function BoardsDropDown({
             <div
               className={`flex items-center gap-[1.2rem]
               cursor-pointer pl-[2.4rem]
-              py-[1.4rem] hover:bg-[#635fc7]/10 rounded-r-full
-              group transition-all duration-300
-              ${
-                decodedBoardName === b.name ? "bg-[#635fc7] rounded-r-full" : ""
-              }`}
+              py-[1.4rem] rounded-r-full
+              group transition-all duration-300 group
+              ${decodedBoardName === b.name ? "bg-[#635fc7]" : "hover:bg-[#635fc7]/10 dark:hover:bg-white"}`}
+              onClick={() => {
+                setShowBoards?.(false);
+                router.push(`/boards/${b.name}`);
+              }}
             >
               <svg
-                className={`${
-                  decodedBoardName === b.name ? "text-white" : "text-[#828fa3]"
+                className={`transition-all duration-300 ${
+                  decodedBoardName === b.name
+                    ? "text-white"
+                    : "text-[#828fa3] group-hover:text-[#635fc7]"
                 }`}
                 width="16"
                 height="16"
@@ -67,17 +71,12 @@ export default function BoardsDropDown({
                 />
               </svg>
               <p
-                onClick={() => {
-                  setShowBoards?.(false);
-                  router.push(`/boards/${b.name}`);
-                }}
                 className={`text-[1.5rem] font-bold
-                  group-hover:text-[#635fc7]
                   transition-all duration-300
                   ${
                     decodedBoardName === b.name
                       ? "text-white "
-                      : "text-[#828fa3]"
+                      : "text-[#828fa3] group-hover:text-[#635fc7]"
                   }`}
               >
                 {b.name}
@@ -120,7 +119,8 @@ export default function BoardsDropDown({
         <div
           className="flex items-center bg-[#f4f7fd]
         justify-center py-[1.4rem] rounded-[0.6rem]
-        gap-[2.3rem]"
+        transition-all duration-300
+        gap-[2.3rem] dark:bg-[#20212c]"
         >
           <svg width="19" height="19" xmlns="http://www.w3.org/2000/svg">
             <path

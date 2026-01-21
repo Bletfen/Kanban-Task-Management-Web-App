@@ -8,7 +8,8 @@ export default function Empty({
   return (
     <div
       className="flex flex-col items-center
-    justify-center min-h-screen gap-[2.5rem]"
+    justify-center min-h-screen gap-[2.5rem]
+    dark:bg-[#20212c]"
     >
       <span
         className="text-[1.8rem] font-bold

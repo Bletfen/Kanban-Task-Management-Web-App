@@ -21,7 +21,9 @@ export default function Edit_DeleteDropDown({
       top-18 rounded-[0.8rem]
       shadow-[0_1rem_2rem_0_rgba(54,78,126,0.25)]
       text-[1.3rem] font-[500] leading-[1.77]
-      z-50"
+      z-50
+      transition-all duration-300
+      dark:bg-[#20212c]"
     >
       <p
         onClick={() => {

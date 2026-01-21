@@ -306,10 +306,16 @@ export default function Form({
       <div
         className="bg-white p-[2.4rem] rounded-[0.6rem]
           flex flex-col gap-[2.4rem] max-w-[48rem] w-full
-          cursor-default md:p-[3.2rem]"
+          cursor-default md:p-[3.2rem]
+          transition-all duration-300
+          dark:bg-[#2b2c37]"
         onClick={(e) => e.stopPropagation()}
       >
-        <h1 className="text-[1.8rem] font-bold text-[#000112]">
+        <h1
+          className="text-[1.8rem] font-bold text-[#000112]
+          transition-all duration-300
+          dark:text-white"
+        >
           {type === "board" && "Edit board"}
           {type === "task" && "Edit Task"}
           {type === "addBoard" && "Add New Board"}
@@ -317,7 +323,9 @@ export default function Form({
         </h1>
         <div className="flex flex-col gap-[0.8rem]">
           <label
-            className="text-[1.2rem] font-bold text-[#828fa3]"
+            className="text-[1.2rem] font-bold text-[#828fa3]
+            transition-all duration-300
+            dark:text-white"
             htmlFor="Title"
           >
             {type === "board" && "Board Name"}
@@ -331,12 +339,13 @@ export default function Form({
               flex items-center justify-between
               ${errorTitle ? "border-[#ea5555]" : "border-[rgba(130,143,163,0.25)]"}
               focus-within:border-[#635fc7]
-              transition-all duration-300`}
+              transition-all duration-300
+              dark:bg-[#2b2c37]`}
           >
             <input
               className="w-full
               text-[1.3rem] font-[500] leading-[1.77]
-              text-[#000112] outline-none"
+              text-[#000112] outline-none dark:text-white"
               type="text"
               name="Title"
               placeholder={
@@ -380,7 +389,9 @@ export default function Form({
         {(type === "task" || type === "addTask") && (
           <div className="flex flex-col gap-[0.8rem]">
             <label
-              className="text-[1.2rem] font-bold text-[#828fa3]"
+              className="text-[1.2rem] font-bold text-[#828fa3]
+              transition-all duration-300
+              dark:text-white"
               htmlFor="Description"
             >
               Description
@@ -392,7 +403,8 @@ export default function Form({
               text-[1.3rem] font-[500] leading-[1.77]
               text-[#000112] resize-none outline-none
               focus-within:border-[#635fc7]
-              transition-all duration-300"
+              transition-all duration-300
+              dark:bg-[#2b2c37] dark:text-white"
               name="Description"
               placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
               defaultValue={localTask?.description}
@@ -438,7 +450,9 @@ export default function Form({
             <div className="flex flex-col gap-[0.8rem]">
               <p
                 className="text-[1.2rem] font-bold
-                text-[#828fa3]"
+                text-[#828fa3]
+                transition-all duration-300
+                dark:text-white"
               >
                 Board Columns
               </p>
@@ -455,7 +469,8 @@ export default function Form({
                         value={c.name}
                         className="text-[1.3rem]
                         font-[500] leading-[1.77] text-[#000112]
-                        outline-none"
+                        outline-none transition-all duration-300
+                        dark:text-white"
                         onChange={(e) => {
                           const val = e.target.value;
                           setColumns((prev) =>
@@ -494,7 +509,9 @@ export default function Form({
                   className="py-[0.9rem] flex items-center
                       justify-center bg-[rgba(99,95,199,0.1)] rounded-[2rem]
                       w-full text-[1.3rem] font-bold leading-[1.77]
-                      text-[#635fc7] cursor-pointer"
+                      text-[#635fc7] cursor-pointer transition-all
+                      duration-300
+                      dark:bg-white"
                   type="button"
                   onClick={() => {
                     addColumns();

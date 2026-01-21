@@ -20,19 +20,25 @@ export default function StatusChange({
 }) {
   return (
     <div>
-      <p className="text-[1.2rem] font-bold text-[#828fa3]">Status</p>
+      <p
+        className="text-[1.2rem] font-bold text-[#828fa3]
+          transition-all duration-300
+          dark:text-white mb-[0.8rem]"
+      >
+        Status
+      </p>
       <div
         className={`py-[0.9rem] px-[1.6rem] bg-white
             border transition-all duration-300
             bg-white flex items-center justify-between
             rounded-[0.4rem] relative
-            cursor-pointer
+            cursor-pointer dark:bg-[#2b2c37]
             ${showDropDown ? "border-[#635fc7]" : "border-[rgba(130,143,163,0.25)]"}`}
         onClick={() => setShowDropDown((prev) => !prev)}
       >
         <p
           className="text-[1.3rem] font-[500] leading-[1.77]
-                  text-[#000112]"
+                  text-[#000112] dark:text-white"
         >
           {status || "Select Status"}
         </p>
