@@ -11,7 +11,7 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
   const paramsBoardName = params.board;
   const decodedBoardName = decodeURIComponent(
     (Array.isArray(paramsBoardName) ? paramsBoardName[0] : paramsBoardName) ||
-      ""
+      "",
   );
   const [showAddTaskForm, setShowAddTaskForm] = useState<boolean>(false);
   const [statusNames, setStatusNames] = useState<string[]>([]);
@@ -39,14 +39,16 @@ export default function HeaderClient({ boards }: { boards: TBoards }) {
     <div className="relative">
       {showBoards && (
         <div
-          className="fixed inset-0 bg-black/50 z-40"
+          className="fixed inset-0 bg-black/50 z-40
+          md:hidden"
           onClick={() => setShowBoards(false)}
         ></div>
       )}
       <div
         className="flex items-center justify-between
       p-[1.6rem] relative z-50 bg-white
-      md:z-0"
+      md:z-40
+      "
       >
         <HeaderTitle
           boards={boards}

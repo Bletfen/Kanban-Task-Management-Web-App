@@ -3,7 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import Header from "../components/Header";
-import SideBar from "@/components/SideBar";
+import SideBarServer from "@/components/SideBarServer";
 
 const Jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -23,10 +23,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${Jakarta.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="min-h-screen md:flex overflow-x-hidden">
-            <aside className="hidden md:block w-[260px] shrink-0">
-              <SideBar />
-            </aside>
+          <div className="min-h-screen md:flex">
+            <SideBarServer />
 
             <div className="flex-1 flex flex-col min-w-0">
               <Header />

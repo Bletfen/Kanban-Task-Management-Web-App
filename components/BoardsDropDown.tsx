@@ -8,10 +8,12 @@ export default function BoardsDropDown({
   boards,
   setShowBoards,
   type,
+  onOpenCreateBoard,
 }: {
   boards: TBoards;
   setShowBoards?: Dispatch<SetStateAction<boolean>>;
   type?: string;
+  onOpenCreateBoard?: () => void;
 }) {
   const router = useRouter();
   const params = useParams();
@@ -26,12 +28,11 @@ export default function BoardsDropDown({
 
   return (
     <div
-      className={`z-50 bg-white md:flex md:flex-col md:justify-between
-        md:min-h-screen
+      className={`z-50 bg-white
       ${
         type === "tablet"
-          ? "relative top-0 left-0 w-full shadow-none mt-[5.4rem]"
-          : "absolute top-25 left-15 w-[26.4rem] shadow-[0_10px_20px_rgba(54,78,126,0.25)] py-[1.6rem] rounded-[0.8rem]"
+          ? "relative top-0 left-0 w-full shadow-none mt-[5.4rem] md:flex md:flex-col md:justify-between md:min-h-screen"
+          : "absolute top-25 left-15 w-[26.4rem] shadow-[0_10px_20px_rgba(54,78,126,0.25)] py-[1.6rem] rounded-[0.8rem] md:hidden"
       }`}
     >
       <div className="pr-[2.4rem]">
@@ -86,7 +87,11 @@ export default function BoardsDropDown({
         cursor-pointer py-[1.4rem] items-center
         mb-[1.6rem]"
           onClick={() => {
-            setAddNewBoard(true);
+            if (type === "tablet") {
+              onOpenCreateBoard?.();
+            } else {
+              setAddNewBoard(true);
+            }
           }}
         >
           <svg

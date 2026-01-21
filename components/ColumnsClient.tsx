@@ -71,8 +71,8 @@ export default function ColumnsClient({
                         col.name === "Todo"
                           ? "bg-[#49c4e5]"
                           : col.name === "Doing"
-                          ? "bg-[#8471f2]"
-                          : "bg-[#67e2ae]"
+                            ? "bg-[#8471f2]"
+                            : "bg-[#67e2ae]"
                       }`}
                     ></div>
                     <p
@@ -88,9 +88,9 @@ export default function ColumnsClient({
                       <div
                         key={taskIndex}
                         className="px-[1.6rem] py-[2.3rem]
-                    bg-white shadow-[0_0.4rem_0.6rem_0_rgba(54,78,126,0.1)]
-                    rounded-[0.8rem] flex flex-col gap-[0.8rem]
-                    cursor-pointer"
+                          bg-white shadow-[0_0.4rem_0.6rem_0_rgba(54,78,126,0.1)]
+                          rounded-[0.8rem] flex flex-col gap-[0.8rem]
+                          cursor-pointer"
                         onClick={() => {
                           setSelectedTask({ task, columnName: col.name });
                         }}
@@ -105,7 +105,7 @@ export default function ColumnsClient({
                           <span>
                             {
                               task.subtasks.filter(
-                                (subTask: TSubtasks) => subTask.isCompleted
+                                (subTask: TSubtasks) => subTask.isCompleted,
                               ).length
                             }
                           </span>
@@ -119,7 +119,7 @@ export default function ColumnsClient({
                 </div>
               ))}
               <div
-                className="min-h-screen flex items-center
+                className="flex items-center
                   justify-center px-[5.55rem]
                   bg-[linear-gradient(to_bottom,#e9effa,rgba(233,239,250,0.5))]
                   mt-[4rem] rounded-[0.6rem]

@@ -52,10 +52,10 @@ export default function Form({
   const [errorSubTasks, setErrorSubTasks] = useState<number[]>([]);
   const currentBoard = boards?.find((b) => b.name === boardName);
   const [boardTitle, setBoardTitle] = useState<string>(
-    currentBoard?.name || boardName || ""
+    currentBoard?.name || boardName || "",
   );
   const [columns, setColumns] = useState<TColumns[]>(
-    currentBoard?.columns || []
+    currentBoard?.columns || [],
   );
   const [columnErrors, setColumnErrors] = useState<number[]>([]);
   const defaultStatusNames =
@@ -67,7 +67,7 @@ export default function Form({
       description: "",
       status: "",
       subtasks: [],
-    }
+    },
   );
   const [errorStatus, setErrorStatus] = useState<boolean>(false);
 
@@ -84,7 +84,7 @@ export default function Form({
   };
   const subTaskErrorHandler = (
     e: ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     if (!e.target.value.trim()) {
       setErrorSubTasks((prev) => [...prev, index]);
@@ -153,9 +153,9 @@ export default function Form({
       try {
         const res = await fetch(
           `/api/boards/${encodeURIComponent(
-            boardName
+            boardName,
           )}/columns/${encodeURIComponent(
-            columnName
+            columnName,
           )}/tasks/${encodeURIComponent(taskName)}`,
           {
             method: "PUT",
@@ -163,7 +163,7 @@ export default function Form({
               "Content-Type": "application/json",
             },
             body: JSON.stringify(localTask),
-          }
+          },
         );
         if (!res.ok) {
           throw new Error("Can not edit task");
@@ -202,7 +202,7 @@ export default function Form({
               name: boardTitle.trim(),
               columns,
             }),
-          }
+          },
         );
         if (!res.ok) {
           throw new Error("Cannot edit board");
@@ -250,7 +250,7 @@ export default function Form({
             "Content-Type": "application/json",
           },
           body: JSON.stringify(taskToCreate),
-        }
+        },
       );
       setShowEdit(false);
       router.refresh();
@@ -340,8 +340,8 @@ export default function Form({
                 type === "addBoard"
                   ? "e.g. Web Design"
                   : type === "addTask"
-                  ? "e.g. Take coffee break"
-                  : ""
+                    ? "e.g. Take coffee break"
+                    : ""
               }
               defaultValue={type === "board" ? boardTitle : localTask?.title}
               onChange={(e) => {
@@ -455,11 +455,11 @@ export default function Form({
                           const val = e.target.value;
                           setColumns((prev) =>
                             prev.map((col, i) =>
-                              i === idx ? { ...col, name: val } : col
-                            )
+                              i === idx ? { ...col, name: val } : col,
+                            ),
                           );
                           setColumnErrors((prev) =>
-                            prev.filter((i) => i !== idx)
+                            prev.filter((i) => i !== idx),
                           );
                         }}
                       />
