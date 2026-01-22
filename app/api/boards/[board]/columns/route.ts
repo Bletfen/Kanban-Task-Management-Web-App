@@ -1,57 +1,41 @@
-// import { NextResponse } from "next/server";
-// import data from "@data/data.json";
-
-// export async function POST(
-//   req: Request,
-//   { params }: { params: Promise<{ board: string }> },
-// ) {
-//   const { board } = await params;
-//   const body = await req.json();
-//   if (!body?.name) {
-//     return NextResponse.json({ error: "Can't be empty" }, { status: 400 });
-//   }
-//   const updatedBoard = data.boards.map((b) => {
-//     if (b.name === board) {
-//       return {
-//         ...b,
-//         columns: [...b.columns, body],
-//       };
-//     }
-//     return b;
-//   });
-//   data.boards = updatedBoard;
-//   return NextResponse.json(
-//     { message: "Task added successfully" },
-//     { status: 200 },
-//   );
-// }
-
 import { NextResponse } from "next/server";
-import { getBoards, saveBoards } from "../../../../lib/data-service";
+import { getBoardByName, updateBoardColumns } from "@/app/lib/mongodb";
 
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ board: string }> },
 ) {
-  const { board } = await params;
-  const body = await req.json();
-  const boards = await getBoards();
+  try {
+    const { board } = await params;
+    const body = await req.json();
 
-  if (!body?.name) {
-    return NextResponse.json({ error: "Can't be empty" }, { status: 400 });
-  }
-
-  const updatedBoards = boards.map((b) => {
-    if (b.name === board) {
-      return {
-        ...b,
-        columns: [...b.columns, { name: body.name, tasks: [] }],
-      };
+    if (!body?.name) {
+      return NextResponse.json(
+        { error: "Column name cannot be empty" },
+        { status: 400 },
+      );
     }
-    return b;
-  });
 
-  await saveBoards(updatedBoards); // ✅ შენახვა
+    const boardData = await getBoardByName(board);
+    if (!boardData) {
+      return NextResponse.json({ error: "Board not found" }, { status: 404 });
+    }
 
-  return NextResponse.json({ message: "Column added successfully" });
+    const newColumn = {
+      name: body.name,
+      tasks: [],
+    };
+
+    await updateBoardColumns(board, newColumn);
+
+    return NextResponse.json(
+      { message: "Column added successfully" },
+      { status: 201 },
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to add column" },
+      { status: 500 },
+    );
+  }
 }

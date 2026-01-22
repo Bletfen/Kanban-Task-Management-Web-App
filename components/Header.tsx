@@ -1,5 +1,5 @@
 import HeaderClient from "./HeaderClient";
-import { getBoards } from "../app/lib/data-service";
+import { getBoards } from "../app/lib/mongodb";
 
 export default async function Header() {
   const boards = await getBoards();

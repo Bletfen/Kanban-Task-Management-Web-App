@@ -1,6 +1,6 @@
 import ColumnsClient from "@/components/ColumnsClient";
 import { redirect } from "next/navigation";
-import { getBoard, getBoards } from "../../lib/data-service";
+import { getBoardByName, getBoards } from "@/app/lib/mongodb";
 
 export default async function BoardPage({
   params,
@@ -10,7 +10,7 @@ export default async function BoardPage({
   const { board } = await params;
   const boardName = decodeURIComponent(board);
 
-  const boardsData = await getBoard(boardName);
+  const boardsData = await getBoardByName(boardName);
   const allBoards = await getBoards();
 
   if (!boardsData) {

@@ -1,55 +1,26 @@
 import { NextResponse } from "next/server";
-import data from "@data/data.json";
-import { getBoards, saveBoards } from "@/app/lib/data-service";
+import { getBoards, insertBoard } from "@/app/lib/mongodb";
 
-export async function GET(res: Request) {
+export async function GET() {
   const boards = await getBoards();
-  if (!boards) {
-    return NextResponse.json(
-      {
-        error: "No board found",
-      },
-      { status: 400 },
-    );
-  }
-  return NextResponse.json(boards, { status: 200 });
+  return NextResponse.json(boards);
 }
 
-// export async function POST(req: Request) {
-//   const reqBody = await req.json();
-//   const newBoard = reqBody;
-//   data.boards.push(newBoard);
-//   await saveBoards(boards);
-//   return NextResponse.json(
-//     { message: "Board added successfully" },
-//     { status: 201 },
-//   );
-// }
-
 export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const boards = await getBoards();
+  const body = await req.json();
 
-    const newBoard = {
-      name: body.name,
-      columns: body.columns.map((col: any) => ({
-        name: col.name,
-        tasks: [],
-      })),
-    };
+  const newBoard = {
+    name: body.name,
+    columns: body.columns.map((c: any) => ({
+      name: c.name,
+      tasks: [],
+    })),
+  };
 
-    boards.push(newBoard);
-    await saveBoards(boards);
+  await insertBoard(newBoard);
 
-    return NextResponse.json(
-      { message: "Board created", board: newBoard },
-      { status: 201 },
-    );
-  } catch (error) {
-    return NextResponse.json(
-      { message: "Failed to create board" },
-      { status: 500 },
-    );
-  }
+  return NextResponse.json(
+    { message: "Board created", board: newBoard },
+    { status: 201 },
+  );
 }
