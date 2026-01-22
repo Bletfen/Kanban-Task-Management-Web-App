@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "migrate": "tsx scripts/migrate-data.ts"
+    "migrate": "tsx scripts/migrate-data.ts",
+    "cleanup": "tsx scripts/cleanup-duplicates.ts",
+    "reset": "tsx scripts/reset-database.ts"
   },
   "dependencies": {
     "@vercel/kv": "^3.0.0",
