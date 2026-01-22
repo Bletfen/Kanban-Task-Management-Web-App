@@ -27,7 +27,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Initialize boards for new users
   await InitializeBoards();
 
   return (
