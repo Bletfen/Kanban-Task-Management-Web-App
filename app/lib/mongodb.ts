@@ -23,46 +23,46 @@ if (process.env.NODE_ENV === "development") {
 
 export default clientPromise;
 
-export async function getBoards(): Promise<IBoard[]> {
+export async function getBoards(userId: string): Promise<IBoard[]> {
   const client = await clientPromise;
   const db = client.db("kanban");
-  const boards = await db.collection("boards").find().toArray();
-  return boards.map(({ _id, ...board }) => board) as IBoard[];
+  const boards = await db.collection("boards").find({ userId }).toArray();
+  return boards.map(({ _id, userId, ...board }) => board) as IBoard[];
 }
 
-export async function getBoardByName(name: string): Promise<IBoard | null> {
+export async function getBoardByName(name: string, userId: string): Promise<IBoard | null> {
   const client = await clientPromise;
   const db = client.db("kanban");
-  const board = await db.collection("boards").findOne({ name });
+  const board = await db.collection("boards").findOne({ name, userId });
   if (!board) return null;
-  const { _id, ...boardData } = board;
+  const { _id, userId: _, ...boardData } = board;
   return boardData as IBoard;
 }
 
-export async function insertBoard(board: any) {
+export async function insertBoard(board: any, userId: string) {
   const client = await clientPromise;
   const db = client.db("kanban");
-  return db.collection("boards").insertOne(board);
+  return db.collection("boards").insertOne({ ...board, userId });
 }
 
-export async function updateBoard(name: string, data: any) {
+export async function updateBoard(name: string, data: any, userId: string) {
   const client = await clientPromise;
   const db = client.db("kanban");
-  return db.collection("boards").updateOne({ name }, { $set: data });
+  return db.collection("boards").updateOne({ name, userId }, { $set: data });
 }
 
-export async function deleteBoard(name: string) {
+export async function deleteBoard(name: string, userId: string) {
   const client = await clientPromise;
   const db = client.db("kanban");
-  return db.collection("boards").deleteOne({ name });
+  return db.collection("boards").deleteOne({ name, userId });
 }
 
-export async function updateBoardColumns(boardName: string, newColumn: any) {
+export async function updateBoardColumns(boardName: string, newColumn: any, userId: string) {
   const client = await clientPromise;
   const db = client.db("kanban");
   return db
     .collection("boards")
-    .updateOne({ name: boardName }, { $push: { columns: newColumn } as any });
+    .updateOne({ name: boardName, userId }, { $push: { columns: newColumn } as any });
 }
 
 export async function updateTask(
@@ -70,11 +70,12 @@ export async function updateTask(
   columnName: string,
   taskTitle: string,
   updateData: any,
+  userId: string,
 ) {
   const client = await clientPromise;
   const db = client.db("kanban");
 
-  const board = await db.collection("boards").findOne({ name: boardName });
+  const board = await db.collection("boards").findOne({ name: boardName, userId });
   if (!board) throw new Error("Board not found");
 
   const column = board.columns.find((c: any) => c.name === columnName);
@@ -94,7 +95,7 @@ export async function updateTask(
     return await db
       .collection("boards")
       .updateOne(
-        { name: boardName },
+        { name: boardName, userId },
         {
           $pull: {
             "columns.$[col].tasks": { title: taskTitle } as any,
@@ -104,7 +105,7 @@ export async function updateTask(
       )
       .then(() =>
         db.collection("boards").updateOne(
-          { name: boardName },
+          { name: boardName, userId },
           {
             $push: {
               "columns.$[col].tasks": updatedTask,
@@ -115,7 +116,7 @@ export async function updateTask(
       );
   } else {
     return await db.collection("boards").updateOne(
-      { name: boardName },
+      { name: boardName, userId },
       {
         $set: {
           "columns.$[col].tasks.$[task]": {
@@ -135,11 +136,12 @@ export async function deleteTask(
   boardName: string,
   columnName: string,
   taskTitle: string,
+  userId: string,
 ) {
   const client = await clientPromise;
   const db = client.db("kanban");
   return db.collection("boards").updateOne(
-    { name: boardName },
+    { name: boardName, userId },
     {
       $pull: {
         "columns.$[col].tasks": { title: taskTitle } as any,
@@ -147,4 +149,25 @@ export async function deleteTask(
     },
     { arrayFilters: [{ "col.name": columnName }] },
   );
+}
+
+export async function initializeUserBoards(userId: string) {
+  const client = await clientPromise;
+  const db = client.db("kanban");
+  
+  // Check if user already has boards
+  const existingBoards = await db.collection("boards").findOne({ userId });
+  if (existingBoards) return;
+
+  // Load initial data from JSON
+  const data = await import("../../data/data.json");
+  const initialBoards = data.default.boards.map((board: any) => ({
+    ...board,
+    userId,
+  }));
+
+  // Insert initial boards for this user
+  if (initialBoards.length > 0) {
+    await db.collection("boards").insertMany(initialBoards);
+  }
 }

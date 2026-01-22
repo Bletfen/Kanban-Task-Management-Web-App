@@ -39,7 +39,9 @@ export default function StatusDropDown({
         shadow-[0_1rem_2rem_0_rgba(54,78,126,0.25)]
         w-full
         flex flex-col gap-[0.8rem]
-        text-[1.3rem] font-[500] text-[#828fa3]"
+        text-[1.3rem] font-[500] text-[#828fa3]
+        transition-all duration-300
+        dark:bg-[#20212c]"
     >
       {names?.map((n) => (
         <p

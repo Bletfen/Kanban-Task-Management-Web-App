@@ -1,13 +1,15 @@
 import { NextResponse } from "next/server";
 import { getBoardByName, updateBoard, deleteBoard } from "@/app/lib/mongodb";
+import { getUserId } from "@/app/lib/session";
 
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ board: string }> },
 ) {
   try {
+    const userId = await getUserId();
     const { board } = await params;
-    const boardData = await getBoardByName(board);
+    const boardData = await getBoardByName(board, userId);
 
     if (!boardData) {
       return NextResponse.json({ error: "Board not found" }, { status: 404 });
@@ -26,11 +28,12 @@ export async function POST(
   { params }: { params: Promise<{ board: string }> },
 ) {
   try {
+    const userId = await getUserId();
     const { board } = await params;
     const body = await req.json();
     const columnName = body?.status;
 
-    const boardData = await getBoardByName(board);
+    const boardData = await getBoardByName(board, userId);
     if (!boardData) {
       return NextResponse.json({ error: "Board not found" }, { status: 404 });
     }
@@ -66,7 +69,7 @@ export async function POST(
       return col;
     });
 
-    await updateBoard(board, { columns: updatedColumns });
+    await updateBoard(board, { columns: updatedColumns }, userId);
 
     return NextResponse.json(
       { message: "Task added successfully" },
@@ -82,10 +85,11 @@ export async function PUT(
   { params }: { params: Promise<{ board: string }> },
 ) {
   try {
+    const userId = await getUserId();
     const { board } = await params;
     const body = await req.json();
 
-    const existing = await getBoardByName(board);
+    const existing = await getBoardByName(board, userId);
     if (!existing) {
       return NextResponse.json({ error: "Board not found" }, { status: 404 });
     }
@@ -125,7 +129,7 @@ export async function PUT(
     await updateBoard(board, {
       name: nextName,
       columns: sanitizedColumns,
-    });
+    }, userId);
 
     return NextResponse.json({ message: "Board updated" });
   } catch (error) {
@@ -141,14 +145,15 @@ export async function DELETE(
   { params }: { params: Promise<{ board: string }> },
 ) {
   try {
+    const userId = await getUserId();
     const { board } = await params;
-    const existingBoard = await getBoardByName(board);
+    const existingBoard = await getBoardByName(board, userId);
 
     if (!existingBoard) {
       return NextResponse.json({ error: "Board not found" }, { status: 404 });
     }
 
-    await deleteBoard(board);
+    await deleteBoard(board, userId);
 
     return NextResponse.json({ message: "Board deleted successfully" });
   } catch (error) {

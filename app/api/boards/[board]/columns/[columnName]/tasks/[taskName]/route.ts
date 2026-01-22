@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { updateTask, deleteTask } from "@/app/lib/mongodb";
+import { getUserId } from "@/app/lib/session";
 
 export async function PUT(
   req: Request,
@@ -10,10 +11,11 @@ export async function PUT(
   },
 ) {
   try {
+    const userId = await getUserId();
     const { board, columnName, taskName } = await params;
     const body = await req.json();
 
-    await updateTask(board, columnName, taskName, body);
+    await updateTask(board, columnName, taskName, body, userId);
 
     return NextResponse.json({
       message: "Task updated successfully",
@@ -35,9 +37,10 @@ export async function DELETE(
   },
 ) {
   try {
+    const userId = await getUserId();
     const { board, columnName, taskName } = await params;
 
-    await deleteTask(board, columnName, taskName);
+    await deleteTask(board, columnName, taskName, userId);
 
     return NextResponse.json({
       message: "Task deleted successfully",

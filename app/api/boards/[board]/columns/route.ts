@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { getBoardByName, updateBoardColumns } from "@/app/lib/mongodb";
+import { getUserId } from "@/app/lib/session";
 
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ board: string }> },
 ) {
   try {
+    const userId = await getUserId();
     const { board } = await params;
     const body = await req.json();
 
@@ -16,7 +18,7 @@ export async function POST(
       );
     }
 
-    const boardData = await getBoardByName(board);
+    const boardData = await getBoardByName(board, userId);
     if (!boardData) {
       return NextResponse.json({ error: "Board not found" }, { status: 404 });
     }
@@ -26,7 +28,7 @@ export async function POST(
       tasks: [],
     };
 
-    await updateBoardColumns(board, newColumn);
+    await updateBoardColumns(board, newColumn, userId);
 
     return NextResponse.json(
       { message: "Column added successfully" },
