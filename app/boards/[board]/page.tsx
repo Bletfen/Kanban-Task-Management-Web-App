@@ -1,4 +1,3 @@
-// app/boards/[board]/page.tsx
 import ColumnsClient from "@/components/ColumnsClient";
 import { redirect } from "next/navigation";
 import { getBoard, getBoards } from "../../lib/data-service";

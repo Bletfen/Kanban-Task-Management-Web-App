@@ -1,16 +1,20 @@
-import fs from "fs/promises";
-import path from "path";
+
+import { kv } from "@vercel/kv";
+import initialData from "@/data/data.json";
 
 export async function getBoards(): Promise<TBoards> {
-  try {
-    const filePath = path.join(process.cwd(), "data", "data.json");
-    const fileContent = await fs.readFile(filePath, "utf-8");
-    const data = JSON.parse(fileContent);
-    return data.boards;
-  } catch (error) {
-    console.error("Error reading boards:", error);
-    return [];
+  let boards = await kv.get<TBoards>("boards");
+  
+  if (!boards) {
+    boards = initialData.boards;
+    await kv.set("boards", boards);
   }
+  
+  return boards;
+}
+
+export async function saveBoards(boards: TBoards): Promise<void> {
+  await kv.set("boards", boards);
 }
 
 export async function getBoard(boardName: string): Promise<IBoard | null> {
