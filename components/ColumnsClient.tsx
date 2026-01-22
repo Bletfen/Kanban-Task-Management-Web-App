@@ -105,7 +105,8 @@ export default function ColumnsClient({
                         <h1
                           className="text-[1.5rem] text-[#00112]
                         font-bold group-hover:text-[#635fc7]
-                        transition-all duration-300"
+                        transition-all duration-300
+                        line-clamp-3 break-all"
                         >
                           {task.title}
                         </h1>
@@ -197,6 +198,7 @@ export default function ColumnsClient({
             >
               <input
                 type="text"
+                maxLength={10}
                 onChange={(e) => {
                   const val = e.target.value;
                   setColumns((prev) => ({ ...prev, name: val }));

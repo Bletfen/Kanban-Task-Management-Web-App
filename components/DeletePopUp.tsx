@@ -80,7 +80,7 @@ export default function DeletePopUp({
           <h1 className="text-[1.8rem] font-bold text-[#ea5555]">
             {type === "board" ? "Delete this board?" : "Delete this task?"}
           </h1>
-          <p className="text-[1.3rem] font-[500] text-[#828fa3]">
+          <p className="text-[1.3rem] font-[500] text-[#828fa3] break-all">
             Are you sure you want to delete the{" "}
             {type === "board" ? `"${boardName}"` : `"${taskName}"`} task and its
             subtasks? This action cannot be reversed.

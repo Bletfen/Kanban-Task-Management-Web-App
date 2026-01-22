@@ -47,8 +47,11 @@ export default function AddSubTasks({
                 value={sub.title}
                 className="text-[1.3rem]
                 font-[500] leading-[1.77] text-[#000112]
-                outline-none w-full dark:bg-[#2b2c37] dark:text-white"
+                outline-none w-full dark:bg-[#2b2c37] dark:text-white
+                break-all
+                "
                 placeholder="e.g. Do something"
+                maxLength={50}
                 onChange={(e) => {
                   if (isFreshTask) {
                     setTaskState?.((prev) => {

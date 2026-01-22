@@ -120,7 +120,7 @@ export default function Task({
         <h1
           className="text-[1.8rem] font-bold text-[#000112]
           transition-all duration-300
-          dark:text-white"
+          dark:text-white break-all"
         >
           {localTask?.title}
         </h1>
