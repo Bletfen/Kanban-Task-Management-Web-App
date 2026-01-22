@@ -1,14 +1,9 @@
 import { NextResponse } from "next/server";
-import {
-  getBoards,
-  insertBoard,
-  initializeUserBoards,
-} from "@/app/lib/mongodb";
+import { getBoards, insertBoard } from "@/app/lib/mongodb";
 import { getUserId } from "@/app/lib/session";
 
 export async function GET() {
   const userId = await getUserId();
-  await initializeUserBoards(userId);
   const boards = await getBoards(userId);
   return NextResponse.json(boards);
 }

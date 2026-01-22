@@ -1,10 +1,9 @@
 import { redirect } from "next/navigation";
-import { getBoards, initializeUserBoards } from "./lib/mongodb";
+import { getBoards } from "./lib/mongodb";
 import { getUserId } from "./lib/session";
 
 export default async function HomePage() {
   const userId = await getUserId();
-  await initializeUserBoards(userId);
   const boards = await getBoards(userId);
 
   if (!boards.length) {

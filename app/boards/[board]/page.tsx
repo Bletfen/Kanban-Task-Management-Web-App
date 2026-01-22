@@ -1,10 +1,6 @@
 import ColumnsClient from "@/components/ColumnsClient";
 import { redirect } from "next/navigation";
-import {
-  getBoardByName,
-  getBoards,
-  initializeUserBoards,
-} from "@/app/lib/mongodb";
+import { getBoardByName, getBoards } from "@/app/lib/mongodb";
 import { getUserId } from "@/app/lib/session";
 
 export default async function BoardPage({
@@ -13,7 +9,6 @@ export default async function BoardPage({
   params: Promise<{ board: string }>;
 }) {
   const userId = await getUserId();
-  await initializeUserBoards(userId);
   const { board } = await params;
   const boardName = decodeURIComponent(board);
 

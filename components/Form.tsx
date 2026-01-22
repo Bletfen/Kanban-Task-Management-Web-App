@@ -308,7 +308,8 @@ export default function Form({
           flex flex-col gap-[2.4rem] max-w-[48rem] w-full
           cursor-default md:p-[3.2rem]
           transition-all duration-300
-          dark:bg-[#2b2c37]"
+          dark:bg-[#2b2c37]
+          max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <h1
