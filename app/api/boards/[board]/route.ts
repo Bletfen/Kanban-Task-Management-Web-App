@@ -126,10 +126,14 @@ export async function PUT(
       );
     }
 
-    await updateBoard(board, {
-      name: nextName,
-      columns: sanitizedColumns,
-    }, userId);
+    await updateBoard(
+      board,
+      {
+        name: nextName,
+        columns: sanitizedColumns,
+      },
+      userId,
+    );
 
     return NextResponse.json({ message: "Board updated" });
   } catch (error) {

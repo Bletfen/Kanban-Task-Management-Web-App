@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { getBoards, insertBoard, initializeUserBoards } from "@/app/lib/mongodb";
+import {
+  getBoards,
+  insertBoard,
+  initializeUserBoards,
+} from "@/app/lib/mongodb";
 import { getUserId } from "@/app/lib/session";
 
 export async function GET() {
