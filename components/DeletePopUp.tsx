@@ -40,6 +40,7 @@ export default function DeletePopUp({
           method: "DELETE",
         },
       );
+      setShowDelete(false);
       router.refresh();
       setSelectedTask?.(null);
     } catch {
@@ -53,6 +54,7 @@ export default function DeletePopUp({
       await fetch(`/api/boards/${encodeURIComponent(boardName)}`, {
         method: "DELETE",
       });
+      setShowDelete(false);
       router.refresh();
     } catch (err) {
       throw new Error("Couldn't delete board");
@@ -112,6 +114,7 @@ export default function DeletePopUp({
           transition-all duration-300
           hover:bg-[rgba(99,95,199,0.25)]
           dark:bg-white"
+            onClick={() => setShowDelete(false)}
           >
             Cancel
           </button>

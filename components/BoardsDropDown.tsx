@@ -73,6 +73,9 @@ export default function BoardsDropDown({
               <p
                 className={`text-[1.5rem] font-bold
                   transition-all duration-300
+                  overflow-hidden 
+                  text-ellipsis 
+                  whitespace-nowrap
                   ${
                     decodedBoardName === b.name
                       ? "text-white "
