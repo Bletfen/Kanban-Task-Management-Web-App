@@ -370,7 +370,11 @@ export default function Form({
                     title: e.target.value,
                   }));
                 } else {
-                  setBoardTitle(e.target.value);
+                  const value =
+                    type === "addBoard"
+                      ? e.target.value.replace(/\//g, "")
+                      : e.target.value;
+                  setBoardTitle(value);
                 }
                 titleErrorHandler(e);
               }}
