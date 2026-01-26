@@ -1,20 +1,43 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useRef, useEffect, RefObject } from "react";
 
 export default function Edit_DeleteDropDown({
   type,
   setShowEdit,
   setShowDelete,
   setShowEditDelete,
+  buttonRef,
 }: {
   type: string;
   setShowEditDelete?: Dispatch<SetStateAction<boolean>>;
   setShowDelete: Dispatch<SetStateAction<boolean>>;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
+  buttonRef?: RefObject<SVGSVGElement>;
 }) {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        (!buttonRef?.current ||
+          !buttonRef.current.contains(event.target as Node))
+      ) {
+        setShowEditDelete?.(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setShowEditDelete, buttonRef]);
+
   return (
     <div
+      ref={dropdownRef}
       className="absolute bg-white p-[1.6rem]
       flex flex-col gap-[1.6rem]
       w-[19.2rem] right-35 translate-x-1/2

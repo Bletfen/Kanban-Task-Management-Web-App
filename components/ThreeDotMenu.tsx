@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useRef } from "react";
 import Edit_DeleteDropDown from "./Edit_DeleteDropDown";
 import Form from "./Form";
 import DeletePopUp from "./DeletePopUp";
@@ -44,19 +44,14 @@ export default function ThreeDotMenu({
 }) {
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);
+  const buttonRef = useRef<SVGSVGElement>(null!);
 
-  const handleMenu = () => {
-    if (showEditDelete) {
-      setShowEditDelete?.(false);
-    } else {
-      setShowEditDelete?.(true);
-    }
-  };
   return (
     <div className="cursor-pointer relative">
       <svg
+        ref={buttonRef}
         onClick={() => {
-          handleMenu();
+          setShowEditDelete?.((prev) => !prev);
           setShowBoards?.(false);
           setShowAddTaskForm?.(false);
         }}
@@ -76,6 +71,7 @@ export default function ThreeDotMenu({
           setShowEditDelete={setShowEditDelete}
           setShowEdit={setShowEdit}
           setShowDelete={setShowDelete}
+          buttonRef={buttonRef}
         />
       )}
       {showEdit && (

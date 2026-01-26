@@ -23,6 +23,20 @@ export default function ColumnsClient({
   const [showAddColumnForm, setShowAddColumnForm] = useState<boolean>(false);
   const [columnTitleError, setColumnTitleError] = useState<boolean>(false);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const colorsArray = [
+    "#d048b6",
+    "#ff8b6a",
+    "#ffa600",
+    "#8bc48a",
+    "#4eaaff",
+    "#bb86fc",
+    "#03dac6",
+    "#ff0266",
+    "#3700b3",
+    "#03a9f4",
+    "#ff5722",
+    "#cddc39",
+  ];
 
   async function addNewColumn() {
     if (!columns.name) {
@@ -73,13 +87,17 @@ export default function ColumnsClient({
               "
                   >
                     <div
-                      className={`w-[1.5rem] h-[1.5rem] rounded-full ${
-                        index === 0
-                          ? "bg-[#49c4e5]"
-                          : index === 1
-                            ? "bg-[#8471f2]"
-                            : "bg-[#67e2ae]"
-                      }`}
+                      className={`w-[1.5rem] h-[1.5rem] rounded-full`}
+                      style={{
+                        backgroundColor:
+                          index === 0
+                            ? "#49c4e5"
+                            : index === 1
+                              ? "#8471f2"
+                              : index === 2
+                                ? "#67e2ae"
+                                : colorsArray[(index - 3) % colorsArray.length],
+                      }}
                     ></div>
                     <p
                       className="text-[1.2rem] tracking-[0.24] text-[#828fa3]
@@ -205,7 +223,7 @@ export default function ColumnsClient({
                 }}
                 className="text-[1.3rem]
                         font-[500] leading-[1.77] text-[#000112]
-                        outline-none"
+                        outline-none dark:text-white"
               />
               {columnTitleError && (
                 <span
