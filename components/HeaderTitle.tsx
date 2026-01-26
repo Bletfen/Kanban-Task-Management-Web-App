@@ -74,7 +74,12 @@ export default function HeaderTitle({
           <h1
             className="text-[1.8rem] text-[#000112] font-bold
             md:text-[2rem] xl:text-[2.4rem]
-            transition-all duration-300 dark:text-white"
+            transition-all duration-300 dark:text-white
+            overflow-hidden 
+            text-ellipsis 
+            whitespace-nowrap 
+            max-w-[150px] md:max-w-[250px] lg:max-w-[350px] xl:max-w-[450px]
+            "
             onClick={() => {
               if (window.innerWidth >= 768) return;
               handleDropDown();
